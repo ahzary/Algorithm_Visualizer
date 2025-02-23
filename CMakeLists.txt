@@ -25,6 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         gmap.h gmap.cpp
         graphicsscenehandler.h graphicsscenehandler.cpp
+        square.h square.cpp
 
 
     )

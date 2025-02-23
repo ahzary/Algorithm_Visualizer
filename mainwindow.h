@@ -31,9 +31,35 @@ private slots:
 
     void on_clear_clicked();
 
+    void on_actionexit_triggered();
 
 
     void on_Update_Map_button_clicked();
+
+
+    //Map settings buttons start __________
+    void on_set_start_square_clicked();
+
+    void on_set_end_square_clicked();
+
+    void on_set_obstacle_square_clicked();
+
+    void on_set_empty_sqaure_clicked();
+
+    void on_empty_all_squares_clicked();
+
+    void on_gray_all_squares_clicked();
+    //Map settings buttons end __________
+
+    void on_Zoom_in_clicked();
+
+    void on_Zoom_out_clicked();
+
+    void on_export_map_clicked();
+
+    void on_actionLoad_map_triggered();
+
+    void on_actionexport_map_triggered();
 
 private:
     Ui::MainWindow *ui;

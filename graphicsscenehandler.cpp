@@ -7,10 +7,11 @@ GraphicsSceneHandler::GraphicsSceneHandler(QGraphicsScene* Scene
                                            , QObject *parent)
                                         : scene(Scene),QObject(parent)
                                         ,intial_background_size_W(intial_background_size_W_)
-                                        ,intial_background_size_H(intial_background_size_H_){
-
-    background = scene->addRect(0, 0, intial_background_size_W, intial_background_size_H, QPen(Qt::black), QBrush(Qt::white));
-
+                                        ,intial_background_size_H(intial_background_size_H_)
+{
+    //background = scene->addRect(0, 0, intial_background_size_W, intial_background_size_H, QPen(Qt::black), QBrush(Qt::white));
+    Ssize = intial_background_size_W_ / Gsize;
+    Map = std::make_shared<GMap>(Gsize,Ssize);
     draw_map(Gsize,Ssize);
     Map->update_map();
 }
@@ -51,5 +52,15 @@ void GraphicsSceneHandler::resize_map(int newsize){
     };
     //Map->draw_map();
     Map->update_map();
+
+}
+void GraphicsSceneHandler::Zoom(bool in){
+    if (in){
+        Map->size_multiplier += 0.1;
+    }else {
+        Map->size_multiplier -= 0.1;
+    }
+        Map->update_map();
+
 
 }

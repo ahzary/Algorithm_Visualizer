@@ -23,12 +23,12 @@ public:
     void addrect();
     void clearScene();
     void resize_map(int newsize);
-
+    void Zoom(bool in);
     int intial_background_size_W,intial_background_size_H;
     int Gsize =16;
     int Ssize =intial_background_size_W/Gsize;
 
-    std::shared_ptr<GMap> Map = std::make_shared<GMap>(Gsize,Ssize);
+    std::shared_ptr<GMap> Map ;
     void draw_map(int num_of_squares_,int square_size_);
 
 
