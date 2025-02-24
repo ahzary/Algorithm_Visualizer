@@ -28,15 +28,13 @@ private slots:
 
 
     void on_load_map_clicked();
-
     void on_clear_clicked();
-
     void on_actionexit_triggered();
-
-
     void on_Update_Map_button_clicked();
 
 
+    // fill out all text boxes
+    void intialize_line_edits();
     //Map settings buttons start __________
     void on_set_start_square_clicked();
 
@@ -51,15 +49,19 @@ private slots:
     void on_gray_all_squares_clicked();
     //Map settings buttons end __________
 
+    // Zoom buttons
     void on_Zoom_in_clicked();
-
     void on_Zoom_out_clicked();
+    void on_Zoom_Reset_clicked();
 
+    // Map export and load
     void on_export_map_clicked();
-
     void on_actionLoad_map_triggered();
-
     void on_actionexport_map_triggered();
+
+
+    // Algorithm script load
+    void on_Algorithm_Load_clicked();
 
 private:
     Ui::MainWindow *ui;

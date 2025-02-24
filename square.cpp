@@ -26,7 +26,6 @@ square::square(QObject* parent) : QObject(parent){
     setAcceptHoverEvents(true);
 }
 void square::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
-    //setBrush(QBrush(Qt::red));
     setPen(QPen(Qt::red));  // Change color on hover
     update();
     QGraphicsRectItem::hoverEnterEvent(event);

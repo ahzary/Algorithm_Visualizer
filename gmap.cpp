@@ -1,5 +1,5 @@
 #include "gmap.h"
-//#include <QDebug>
+#include <QDebug>
 
 GMap::GMap(int num_of_squares,int square_size){
 
@@ -39,6 +39,7 @@ GMap::GMap(int num_of_squares,int square_size){
 }
 
 void GMap::update_map(){
+qDebug() << "entering update map" ;
 // go over each grid square and update its color
 
         for(int i=0;i<num_of_squares;i++){
@@ -63,20 +64,18 @@ void GMap::update_map(){
 
  void GMap::change_type(int new_type_){
      Global_button_square_type = new_type_;
-     /*switch (new_type_) {
-     case 3: start_squares->type = 1; start_squares->update_color(); break;
-     case 4: end_squares->type = 1; end_squares->update_color(); break;
-     default: break;
-     }*/
-
  }
 
  void GMap::saveToCSV(){
     QString filename = QFileDialog::getSaveFileName(nullptr,
                                                      "CSV Files (*.csv);;All Files (*)");
 
-    if (filename.isEmpty()) return; // If the user cancels, do nothing
-    filename += ".csv";
+    // If the user cancels, do nothing
+    if (filename.isEmpty()) return;
+    // Ensure the filename has the .csv extension
+    if (!filename.endsWith(".csv", Qt::CaseInsensitive)) {
+        filename += ".csv";
+    }
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
@@ -94,13 +93,13 @@ void GMap::update_map(){
 
  void GMap::loadFromCSV(const QString& filename) {
 
-
+     qDebug() << "file loading started" ;
      QFile file(filename);
      if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
          QTextStream in(&file);
          QVector<QVector<int>> newTypeGrid;
 
-         int rowIdx = 0;
+         //int rowIdx = 0;
          while (!in.atEnd()) {
              QString line = in.readLine();
              QStringList values = line.split(",");
@@ -111,27 +110,31 @@ void GMap::update_map(){
              }
 
              newTypeGrid.append(row);
-             rowIdx++;
+             //rowIdx++;
          }
 
          file.close();
 
          // Ensure correct dimensions
-         if (newTypeGrid.size() == num_of_squares && newTypeGrid[0].size() == num_of_squares) {
-             type_grid = newTypeGrid;
-
+            resize(newTypeGrid.size(),this->square_size);
+            type_grid = newTypeGrid;
              // Apply new types to the grid squares
-             for (int i = 0; i < num_of_squares; i++) {
-                 for (int j = 0; j < num_of_squares; j++) {
-                     if (Grid[i][j] != nullptr) {
-                         Grid[i][j]->type = type_grid[i][j];
-                         Grid[i][j]->update_color();
-                     }
-                 }
-             }
-         }
-     }
- }
+         for (int i = 0; i < num_of_squares; i++) {
+             for (int j = 0; j < num_of_squares; j++) {
+                 if (Grid[i][j] != nullptr) {
+                     // populate start and end square pointers
+                     if (type_grid[i][j] == 5){start_square = Grid[i][j];}
+                     else if (type_grid[i][j] == 6){end_square = Grid[i][j];}
+                     // populate both vectors
+                     Grid[i][j]->type = type_grid[i][j];
+                     Grid[i][j]->update_color();
+                 } // if end
+             } // inner for end
+         } // outer for end
+
+
+     } // end of if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+ } // end of GMap::loadFromCSV(const QString& filename)
 
  void GMap::handleClickedSquare(int x, int y){
 
@@ -146,9 +149,11 @@ void GMap::update_map(){
 
  void GMap::if_unique(int x,int y){
     //qDebug() << "if_unique square set at:" << x << y << Global_button_square_type;
-     switch (Global_button_square_type) {
-     case 5:
+
+    switch (Global_button_square_type) {
+     case 5: // start square type
          if(start_square != nullptr){
+             //reset the previous start square
              start_square->type = 1;
              start_square->update_color();
          }
@@ -156,16 +161,52 @@ void GMap::update_map(){
             start_square = Grid[x][y];
          break;
 
-     case 6:
+     case 6: // end square type
          if(end_square != nullptr){
+             //reset the previous end square
              end_square->type = 1;
              end_square->update_color();
          }
             end_square = Grid[x][y];
          break;
-     default: break;
-     }
+     default:
+         break;
+    }
 
  }
 
+ void GMap::resize(int newSize,int square_size){
+    qDebug() << "entered resize" <<newSize << square_size ;
+    for (int i = 0; i < num_of_squares; i++) {
+        for (int j = 0; j < num_of_squares; j++) {
+            delete Grid[i][j];  // delete old square and free memory to prevent leaks
+            Grid[i][j] = nullptr;
+        }
+    }
+    Grid.clear();
+    type_grid.clear();
 
+    num_of_squares = newSize;
+    this->square_size = square_size;
+
+    Grid.resize(num_of_squares, QVector<square*>(num_of_squares, nullptr));
+    type_grid.resize(num_of_squares, QVector<int>(num_of_squares, 0));
+
+    for (int i = 0; i < num_of_squares; i++) {
+        for (int j = 0; j < num_of_squares; j++) {
+            Grid[i][j] = new square();
+            Grid[i][j]->type=0;
+            Grid[i][j]->x=i;
+            Grid[i][j]->y=j;
+            Grid[i][j]->setRect(i * square_size, j * square_size, square_size, square_size);
+            connect(Grid[i][j], &square::clicked, this, &GMap::handleClickedSquare);
+        }
+    }
+    update_map();
+ }
+ const int GMap::getGridSize(){
+     return num_of_squares;
+ }
+ const int GMap::getSqaureSize(){
+     return square_size;
+ }

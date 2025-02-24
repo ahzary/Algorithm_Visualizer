@@ -2,11 +2,11 @@
 #define GMAP_H
 
 #include "square.h"
-//#include <QPair>
 #include <QFile>
 #include <QTextStream>
 #include <QString>
 #include <QFileDialog>
+
 
 class GMap : public QObject
 {
@@ -24,15 +24,22 @@ public:
     void change_type(int new_type_);
     void saveToCSV();
     void loadFromCSV(const QString& filename);
+    void resize(int newsize,int squareSize);
+    int* num_of_squares_ptr = &num_of_squares;
 
+    const int getGridSize();
+    const int getSqaureSize();
+    void setGidSize(int newSize);
+    void setSquareSize(int newSize);
 
 private slots:
-        void handleClickedSquare(int x, int y);
+    void handleClickedSquare(int x, int y);
 
 private:
 
     // num_of_squares in a row or col;
-    int num_of_squares,square_size;
+    int num_of_squares = 16;
+    int square_size = 30;
     square* square_;
     square* start_square = nullptr;;
     square* end_square = nullptr;;

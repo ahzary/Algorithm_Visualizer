@@ -19,17 +19,18 @@ public:
                          , QObject *parent = nullptr);
 
 
+    std::shared_ptr<GMap> Map ;
 
     void addrect();
     void clearScene();
-    void resize_map(int newsize);
-    void Zoom(bool in);
+    //void resize_map(int newSize);
+    void Zoom(QGraphicsView* view,bool in);
     int intial_background_size_W,intial_background_size_H;
-    int Gsize =16;
-    int Ssize =intial_background_size_W/Gsize;
+    //int Gsize = 16;
+    //int Ssize = 30;
 
-    std::shared_ptr<GMap> Map ;
-    void draw_map(int num_of_squares_,int square_size_);
+
+    void draw_map();
 
 
     QGraphicsRectItem* background;

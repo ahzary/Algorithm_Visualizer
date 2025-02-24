@@ -23,9 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
                                 ,ui->graphicsView->maximumViewportSize().height()
                                 ,this);
 
-    Gsize_line_edit = ui->Gsize_line_edit;
-    Gsize_line_edit->setPlaceholderText("enter map size");
-    ui->Map_file_name_line_edit->setPlaceholderText("Map file name");
+    intialize_line_edits();
+
 
 }
 
@@ -36,15 +35,31 @@ MainWindow::~MainWindow()
 }
 
 
+void MainWindow::intialize_line_edits(){
+    Gsize_line_edit = ui->Gsize_line_edit;
+    Gsize_line_edit->setPlaceholderText("enter map size");
+    ui->Map_file_name_line_edit->setPlaceholderText("New Map");
+    ui->Ssize_line_edit->setPlaceholderText("enter square size");
+
+
+}
+
 void MainWindow::on_load_map_clicked()
 {
+
     QString filename = QFileDialog::getOpenFileName(nullptr,
                                                     "Open CSV File",
                                                     "",
                                                     "CSV Files (*.csv);;All Files (*)");
     if (filename.isEmpty()) return; // If the user cancels, do nothing
+
     Ghandler->Map->loadFromCSV(filename);
-    ui->Map_file_name_line_edit->setPlaceholderText(filename);
+    Ghandler->draw_map();
+
+    // get the filename from the file path and display it on the line text edit
+    ui->Map_file_name_line_edit->setPlaceholderText(filename.mid(filename.lastIndexOf('/') + 1));
+    ui->Gsize_line_edit->setText(QString::number(Ghandler->Map->getGridSize()));
+    ui->Ssize_line_edit->setText(QString::number(Ghandler->Map->getSqaureSize()));
 }
 
 
@@ -60,7 +75,25 @@ void MainWindow::on_clear_clicked()
 
 void MainWindow::on_Update_Map_button_clicked()
 {
-    Ghandler->resize_map(ui->Gsize_line_edit->text().toInt());
+    int Gsize,Ssize;
+
+    // if there are grid size or square size changes then we resize;
+    if (!ui->Ssize_line_edit->text().isEmpty()){
+        Ssize =  ui->Ssize_line_edit->text().toInt();
+    } else{
+        Ssize = Ghandler->Map->getSqaureSize();
+    }
+    if (!ui->Gsize_line_edit->text().isEmpty()){
+        Gsize = ui->Gsize_line_edit->text().toInt();
+    } else {
+        Gsize = Ghandler->Map->getGridSize();
+    }
+
+    Ghandler->Map->resize(Gsize , Ssize);
+    Ghandler->draw_map();
+    //modify text boxes
+    ui->Gsize_line_edit->setText(QString::number(Ghandler->Map->getGridSize()));
+    ui->Ssize_line_edit->setText(QString::number(Ghandler->Map->getSqaureSize()));
 }
 
 void MainWindow::on_actionexit_triggered()
@@ -91,9 +124,10 @@ void MainWindow::on_set_empty_sqaure_clicked()
 
 void MainWindow::on_empty_all_squares_clicked()
 {
+    int Gsize = Ghandler->Map->getGridSize();
     Ghandler->Map->change_type(1);
-    for(int i=0; i < Ghandler->Gsize ;i++){
-        for(int j=0; j < Ghandler->Gsize ;j++){
+    for(int i=0; i < Gsize ;i++){
+        for(int j=0; j < Gsize ;j++){
             if (Ghandler->Map->Grid[i][j] != nullptr) {
                 Ghandler->Map->Grid[i][j]->type=Global_button_square_type;
                 Ghandler->Map->Grid[i][j]->update_color();
@@ -107,9 +141,10 @@ void MainWindow::on_empty_all_squares_clicked()
 
 void MainWindow::on_gray_all_squares_clicked()
 {
+    int Gsize = Ghandler->Map->getGridSize();
     Ghandler->Map->change_type(0);
-    for(int i=0; i < Ghandler->Gsize ;i++){
-        for(int j=0; j < Ghandler->Gsize ;j++){
+    for(int i=0; i < Gsize ;i++){
+        for(int j=0; j < Gsize ;j++){
             if (Ghandler->Map->Grid[i][j] != nullptr) {
                 Ghandler->Map->Grid[i][j]->type=Global_button_square_type;
                 Ghandler->Map->Grid[i][j]->update_color();
@@ -124,13 +159,22 @@ void MainWindow::on_gray_all_squares_clicked()
 
 void MainWindow::on_Zoom_in_clicked()
 {
-    Ghandler->Zoom(true);
+    if (!ui->graphicsView) return;
+    Ghandler->Zoom(ui->graphicsView,true);
+
 }
 
 
 void MainWindow::on_Zoom_out_clicked()
 {
-    Ghandler->Zoom(false);
+    if (!ui->graphicsView) return;
+    Ghandler->Zoom(ui->graphicsView,false);
+}
+
+void MainWindow::on_Zoom_Reset_clicked()
+{
+    if (!ui->graphicsView) return;
+    ui->graphicsView->resetTransform();
 }
 
 
@@ -145,5 +189,13 @@ void MainWindow::on_actionLoad_map_triggered()
 void MainWindow::on_actionexport_map_triggered()
 {
     MainWindow::on_export_map_clicked();
+}
+
+
+
+
+void MainWindow::on_Algorithm_Load_clicked()
+{
+
 }
 
