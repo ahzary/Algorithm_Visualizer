@@ -4,15 +4,16 @@
 GraphicsSceneHandler::GraphicsSceneHandler(QGraphicsScene* Scene
                                            ,int intial_background_size_W_
                                            ,int intial_background_size_H_
+                                           ,std::shared_ptr<GMap> Map_
                                            , QObject *parent)
                                         : scene(Scene),QObject(parent)
                                         ,intial_background_size_W(intial_background_size_W_)
                                         ,intial_background_size_H(intial_background_size_H_)
+                                        ,Map(Map_)
 {
 
     //background = scene->addRect(0, 0, 1, 1, QPen(Qt::black), QBrush(Qt::white));
     //Ssize = intial_background_size_W_ / Gsize;
-    Map = std::make_shared<GMap>(16,30);
     draw_map();
     Map->update_map();
 }

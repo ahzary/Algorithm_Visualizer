@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include "graphicsscenehandler.h"
 #include <QIntValidator>
 #include <QLineEdit>
+#include "gmap.h"
+#include "graphicsscenehandler.h"
+#include "scriptloader.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    std::shared_ptr<GMap> Map ;
 
 
 
@@ -68,5 +71,6 @@ private:
     QGraphicsScene *scene;
     std::shared_ptr<GraphicsSceneHandler> Ghandler;
     QLineEdit* Gsize_line_edit ;
+    std::shared_ptr<scriptLoader> scriptLoader_;
 };
 #endif // MAINWINDOW_H

@@ -17,13 +17,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 
     //get max size of port and give it to scene handler class
-
+    Map = std::make_shared<GMap>(16,32);
     Ghandler = std::make_shared<GraphicsSceneHandler>(scene
                                 ,ui->graphicsView->maximumViewportSize().width()
                                 ,ui->graphicsView->maximumViewportSize().height()
+                                ,Map
                                 ,this);
 
     intialize_line_edits();
+
+    scriptLoader_ = std::make_shared<scriptLoader>(Map);
 
 
 }
@@ -196,6 +199,7 @@ void MainWindow::on_actionexport_map_triggered()
 
 void MainWindow::on_Algorithm_Load_clicked()
 {
-
+    int choice  = ui->Algorithm_dropdown->currentIndex();
+    scriptLoader_ ->loadAlgorithm(choice);
 }
 

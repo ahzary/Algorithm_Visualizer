@@ -16,6 +16,7 @@ class GraphicsSceneHandler : public QObject
 public:
     GraphicsSceneHandler(QGraphicsScene* Scene
                          ,int intial_background_size_W_,int intial_background_size_H_
+                         ,std::shared_ptr<GMap> Map_
                          , QObject *parent = nullptr);
 
 
