@@ -31,6 +31,8 @@ public:
     const int getSqaureSize();
     void setGidSize(int newSize);
     void setSquareSize(int newSize);
+    std::array<int, 2>  getStartSquare() const;
+    std::array<int, 2>  getEndSquare() const;
 
 private slots:
     void handleClickedSquare(int x, int y);

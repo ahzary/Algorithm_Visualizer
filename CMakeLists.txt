@@ -31,7 +31,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         scriptloader.h scriptloader.cpp
         AlgorithmClass.h
         Algorithms/AlgorithmClass.cpp
-        Algorithms/qttesting.py
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Algorithm_Visualizer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

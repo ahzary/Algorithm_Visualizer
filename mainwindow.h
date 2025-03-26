@@ -66,6 +66,8 @@ private slots:
     // Algorithm script load
     void on_Algorithm_Load_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

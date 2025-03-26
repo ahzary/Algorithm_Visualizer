@@ -71,10 +71,7 @@ void MainWindow::on_export_map_clicked()
     Ghandler->Map->saveToCSV();
 }
 
-void MainWindow::on_clear_clicked()
-{
-    //Ghandler->clearScene();
-}
+
 
 void MainWindow::on_Update_Map_button_clicked()
 {
@@ -203,3 +200,21 @@ void MainWindow::on_Algorithm_Load_clicked()
     scriptLoader_ ->loadAlgorithm(choice);
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    static bool start_pause = true;
+    if(start_pause){
+        scriptLoader_->startAlgorithm();
+    }else{
+        scriptLoader_->pauseAlgorithm();
+    }
+
+
+
+}
+
+void MainWindow::on_clear_clicked()
+{
+   scriptLoader_->stopAlgorithm();
+}

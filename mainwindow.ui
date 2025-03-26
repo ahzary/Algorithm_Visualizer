@@ -646,6 +646,25 @@
           <enum>Qt::Orientation::Horizontal</enum>
          </property>
         </widget>
+        <widget class="QPushButton" name="step_once">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>230</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>step once</string>
+         </property>
+        </widget>
        </widget>
       </widget>
      </item>
@@ -889,7 +908,7 @@
          <rect>
           <x>60</x>
           <y>310</y>
-          <width>160</width>
+          <width>205</width>
           <height>31</height>
          </rect>
         </property>
@@ -918,7 +937,7 @@
          <rect>
           <x>60</x>
           <y>340</y>
-          <width>160</width>
+          <width>205</width>
           <height>31</height>
          </rect>
         </property>
@@ -947,7 +966,7 @@
          <rect>
           <x>60</x>
           <y>370</y>
-          <width>160</width>
+          <width>205</width>
           <height>31</height>
          </rect>
         </property>
@@ -982,7 +1001,7 @@
      <x>0</x>
      <y>0</y>
      <width>1752</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menufile">

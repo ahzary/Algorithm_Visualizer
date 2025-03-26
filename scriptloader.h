@@ -12,8 +12,8 @@
 #include <QPair>
 #include <QObject>
 #include <QProcess>
-//#include "AlgorithmClass.h"
 #include <windows.h>
+#include <QThread>
 #include <QDebug>
 
 class scriptLoader : public QObject
@@ -25,22 +25,42 @@ public:
     ~scriptLoader();
     void loadAlgorithm(int choice);
     void checkLanguage();
-    void compileCpp(const QString &filePath);
     void loadDll(const QString &dllPath);
-    void runAlgorithm();
+    void algorithmRunning();
 
+    void startAlgorithm();
+    void stopAlgorithm();
+    void pauseAlgorithm();
+    void resumeAlgorithm();
 
 
 private:
-    std::shared_ptr<GMap> Map ;
-    //std::shared_ptr<Algorithm> alg;
 
-    QString compiledDllPath;
-    HINSTANCE libHandle = nullptr;
-    void loadPython(const QString &scriptPath);
-    void unloadPython(const QString &scriptPath);
-    void mapPyTransform();
+    class Private;
+    std::unique_ptr<Private> d;
+
+
+    std::vector<PyObject*> allPyObjects;
+    QThread* thread = nullptr;
+    std::shared_ptr<GMap> Map ;
     QString getPath();
+    //bool running = false;
+    //bool isPaused = false;
+    // object to interact with python script
+    PyObject* pyAlgorithm = nullptr;
+    PyObject* stepFunc = nullptr;
+    PyObject* pyMap = nullptr;
+    PyObject* pyStart = nullptr;
+    PyObject* pyEnd = nullptr;
+
+    std::vector<std::vector<int>> processedData;
+    void loadPython(const QString &scriptPath);
+    void unloadPython();
+    void mapPyTransform();
+    void pyStepCallBack(PyObject* callBack);
+    void MapUpdate(const std::vector<std::vector<int>>& data);
+
+
 };
 
 #endif // SCRIPTLOADER_H

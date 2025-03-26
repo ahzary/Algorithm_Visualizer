@@ -210,3 +210,19 @@ qDebug() << "entering update map" ;
  const int GMap::getSqaureSize(){
      return square_size;
  }
+std::array<int, 2>  GMap::getStartSquare()const {
+
+    if(start_square == nullptr){
+        qDebug()<< "start square is null" ;
+        return {0,0};
+    }
+
+    return {start_square->x,start_square->y};
+ }
+std::array<int, 2>  GMap::getEndSquare()const {
+    if(end_square == nullptr){
+        qDebug()<< "end square is null" ;
+        return {0,0};
+    }
+    return {end_square->x,end_square->y};
+ }
