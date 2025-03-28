@@ -253,7 +253,7 @@ void scriptLoader::algorithmRunning(){
             stopAlgorithm();
             return;
         }
-        QThread::msleep(10);
+        QThread::msleep(50);
     }
 }
 

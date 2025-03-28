@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     scriptLoader_ = std::make_shared<scriptLoader>(Map);
 
+    connect(Ghandler->Map.get(), &GMap::changeStartSquareText, this, &MainWindow::handleStartSquareText);
+    connect(Ghandler->Map.get(), &GMap::changeEndSquareText, this, &MainWindow::handleEndSquareText);
 
 }
 
@@ -63,6 +65,9 @@ void MainWindow::on_load_map_clicked()
     ui->Map_file_name_line_edit->setPlaceholderText(filename.mid(filename.lastIndexOf('/') + 1));
     ui->Gsize_line_edit->setText(QString::number(Ghandler->Map->getGridSize()));
     ui->Ssize_line_edit->setText(QString::number(Ghandler->Map->getSqaureSize()));
+    handleStartSquareText(0,0);
+    handleEndSquareText(0,0);
+
 }
 
 
@@ -209,12 +214,17 @@ void MainWindow::on_pushButton_clicked()
     }else{
         scriptLoader_->pauseAlgorithm();
     }
-
-
-
+    start_pause = !start_pause;
 }
 
 void MainWindow::on_clear_clicked()
 {
    scriptLoader_->stopAlgorithm();
+}
+void MainWindow::handleStartSquareText(int x, int y){
+    ui->start_square_line_edit->setText(Ghandler->Map->get_start_square_txt());
+
+}
+void MainWindow::handleEndSquareText(int x, int y){
+    ui->end_square_line_edit->setText(Ghandler->Map->get_end_square_txt());
 }

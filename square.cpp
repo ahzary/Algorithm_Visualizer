@@ -10,11 +10,12 @@ QBrush ColorCode(int type){
     switch (type) {
     case 0: return QBrush(Qt::gray); //unassighned sapce
     case 1: return QBrush(Qt::white);//clear space
-    case 2: return QBrush(Qt::blue); //cleared space
+    case 2: return QBrush(Qt::blue); //shortest path
     case 3: return QBrush(Qt::red);  //current step
     case 4: return QBrush(Qt::black);//obstacle
     case 5: return QBrush(Qt::green);//start square
     case 6: return QBrush(Qt::darkMagenta);//end square
+    case 7: return QBrush(Qt::yellow); // Explored nodes (visited but not yet path)
     default:return QBrush(Qt::white);
 
     }

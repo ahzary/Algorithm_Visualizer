@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1752</width>
-    <height>732</height>
+    <height>693</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -879,7 +879,7 @@
          <rect>
           <x>60</x>
           <y>280</y>
-          <width>160</width>
+          <width>201</width>
           <height>31</height>
          </rect>
         </property>
@@ -953,36 +953,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="end_square_line_edit_5">
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="horizontalLayoutWidget_7">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>370</y>
-          <width>205</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_11">
-         <item>
-          <widget class="QLabel" name="label_17">
-           <property name="frameShape">
-            <enum>QFrame::Shape::NoFrame</enum>
-           </property>
-           <property name="text">
-            <string>number of obstacles</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="num_of_obstacle_line_edit_6">
+          <widget class="QLineEdit" name="end_square_line_edit">
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -1001,7 +972,7 @@
      <x>0</x>
      <y>0</y>
      <width>1752</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menufile">

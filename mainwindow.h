@@ -68,6 +68,10 @@ private slots:
 
     void on_pushButton_clicked();
 
+public slots:
+    //Grid Map info methods
+    void handleStartSquareText( int x,  int y);
+    void handleEndSquareText( int x,  int y);
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

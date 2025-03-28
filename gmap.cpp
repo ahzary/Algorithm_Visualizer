@@ -159,6 +159,7 @@ qDebug() << "entering update map" ;
          }
             // qDebug() << "New start square set at:" << x << y;
             start_square = Grid[x][y];
+         emit changeStartSquareText(x,y);
          break;
 
      case 6: // end square type
@@ -168,6 +169,7 @@ qDebug() << "entering update map" ;
              end_square->update_color();
          }
             end_square = Grid[x][y];
+            emit changeEndSquareText(x,y);
          break;
      default:
          break;
@@ -226,3 +228,11 @@ std::array<int, 2>  GMap::getEndSquare()const {
     }
     return {end_square->x,end_square->y};
  }
+QString GMap::get_start_square_txt()const{
+    QString result = "x: " + QString::number(start_square->x) + ", " + "y: " + QString::number(start_square->y);
+    return result;
+}
+QString GMap::get_end_square_txt()const{
+    QString result = "x: " + QString::number(end_square->x) + ", " + "y: " + QString::number(end_square->y);
+    return result;
+}
