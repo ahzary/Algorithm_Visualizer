@@ -68,6 +68,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_update_square_size_button_clicked();
+
 public slots:
     //Grid Map info methods
     void handleStartSquareText( int x,  int y);

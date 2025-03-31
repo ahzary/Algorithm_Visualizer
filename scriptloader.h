@@ -33,6 +33,8 @@ public:
     void pauseAlgorithm();
     void resumeAlgorithm();
 
+    QString getAlgName();
+
 
 private:
 
@@ -52,7 +54,7 @@ private:
     PyObject* pyMap = nullptr;
     PyObject* pyStart = nullptr;
     PyObject* pyEnd = nullptr;
-
+    PyObject* pyAlgoName = nullptr;
     std::vector<std::vector<int>> processedData;
     void loadPython(const QString &scriptPath);
     void unloadPython();

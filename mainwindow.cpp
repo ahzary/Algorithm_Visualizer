@@ -101,6 +101,23 @@ void MainWindow::on_Update_Map_button_clicked()
     ui->Ssize_line_edit->setText(QString::number(Ghandler->Map->getSqaureSize()));
 }
 
+void MainWindow::on_update_square_size_button_clicked()
+{
+    int Ssize=15;
+    // if there are square size changes then we resize;
+    if (!ui->Ssize_line_edit->text().isEmpty()){
+        Ssize =  ui->Ssize_line_edit->text().toInt();
+    } else{
+        Ssize = Ghandler->Map->getSqaureSize();
+    }
+    Ghandler->Map->resize(Ghandler->Map->getGridSize() , Ssize);
+    Ghandler->draw_map();
+    //modify text boxes
+    ui->Ssize_line_edit->setText(QString::number(Ghandler->Map->getSqaureSize()));
+
+}
+
+
 void MainWindow::on_actionexit_triggered()
 {
     QApplication::quit();
@@ -203,6 +220,8 @@ void MainWindow::on_Algorithm_Load_clicked()
 {
     int choice  = ui->Algorithm_dropdown->currentIndex();
     scriptLoader_ ->loadAlgorithm(choice);
+    QString algName = scriptLoader_ ->getAlgName();
+    ui->Algorithm_Name_linedit->setText(algName);
 }
 
 
@@ -228,3 +247,4 @@ void MainWindow::handleStartSquareText(int x, int y){
 void MainWindow::handleEndSquareText(int x, int y){
     ui->end_square_line_edit->setText(Ghandler->Map->get_end_square_txt());
 }
+

@@ -114,7 +114,11 @@ void scriptLoader::loadPython(const QString &scriptPath){
         PyErr_Print();
         return;
     }
+    pyAlgoName = PyObject_GetAttrString(pyAlgorithm, "getName");
+    if (!pyAlgoName || !PyCallable_Check(pyAlgoName)) {
+        qDebug() << "[loadPython]: no name was found";
 
+    }
 
     //startAlgorithm();
 
@@ -137,6 +141,7 @@ void scriptLoader::unloadPython(){
     allPyObjects.clear();
 
     // clean up class members
+    Py_XDECREF(pyAlgoName);
     Py_XDECREF(stepFunc);
     Py_XDECREF(pyAlgorithm);
     Py_XDECREF(pyMap);
@@ -367,4 +372,11 @@ void scriptLoader::resumeAlgorithm() {
 
     // Wake up waiting threads
     d->pauseCondition.wakeAll();
+}
+QString scriptLoader::getAlgName(){
+    PyObject* pyName = PyObject_CallObject(pyAlgoName, nullptr);
+
+    // Convert Python string to UTF-8
+    const char* cStr = PyUnicode_AsUTF8(pyName);
+    return QString::fromUtf8(cStr);
 }
