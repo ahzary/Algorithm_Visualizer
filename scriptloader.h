@@ -23,7 +23,7 @@ class scriptLoader : public QObject
 public:
     explicit scriptLoader(std::shared_ptr<GMap> map, QObject *parent = nullptr);
     ~scriptLoader();
-    void loadAlgorithm(int choice);
+    bool loadAlgorithm(int choice);
     void checkLanguage();
     void loadDll(const QString &dllPath);
     void algorithmRunning();

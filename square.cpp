@@ -49,6 +49,7 @@ void square::update_color(){
 
 
     this->setBrush(ColorCode(this->type));
+    this->update();
 
 }
 

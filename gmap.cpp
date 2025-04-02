@@ -212,6 +212,13 @@ qDebug() << "entering update map" ;
  const int GMap::getSqaureSize(){
      return square_size;
  }
+ void GMap::setSquareSize(int newSize){
+     for (int i = 0; i < num_of_squares; i++) {
+         for (int j = 0; j < num_of_squares; j++) {
+             Grid[i][j]->setRect(i * newSize, j * newSize, newSize, newSize);
+         }}
+
+ }
 std::array<int, 2>  GMap::getStartSquare()const {
 
     if(start_square == nullptr){

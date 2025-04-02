@@ -31,12 +31,15 @@ public:
     const int getSqaureSize();
     void setGidSize(int newSize);
     void setSquareSize(int newSize);
+
     //method for python
     std::array<int, 2>  getStartSquare() const;
     std::array<int, 2>  getEndSquare() const;
+
     //method for ui text labels
     QString get_start_square_txt() const;
     QString get_end_square_txt() const;
+
 signals:
     void changeStartSquareText(int x, int y);
     void changeEndSquareText(int x, int y);

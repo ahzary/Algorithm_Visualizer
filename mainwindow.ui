@@ -212,7 +212,7 @@
           </property>
           <item>
            <property name="text">
-            <string>Choose Algorithm </string>
+            <string>Load Local</string>
            </property>
           </item>
           <item>
@@ -227,7 +227,7 @@
           </item>
           <item>
            <property name="text">
-            <string>load local</string>
+            <string>Choose Algorithm </string>
            </property>
           </item>
          </widget>
@@ -306,173 +306,6 @@
           <enum>Qt::Orientation::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QPushButton" name="set_start_square">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>470</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>set start square</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="set_end_square">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>470</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>set end square</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_7">
-         <property name="geometry">
-          <rect>
-           <x>-20</x>
-           <y>450</y>
-           <width>421</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="set_obstacle_square">
-         <property name="geometry">
-          <rect>
-           <x>280</x>
-           <y>470</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>set obstacle</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_8">
-         <property name="geometry">
-          <rect>
-           <x>-20</x>
-           <y>500</y>
-           <width>421</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="set_empty_sqaure">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>520</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>set empty square</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="empty_all_squares">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>520</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>empty all squares</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_9">
-         <property name="geometry">
-          <rect>
-           <x>-10</x>
-           <y>550</y>
-           <width>421</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="gray_all_squares">
-         <property name="geometry">
-          <rect>
-           <x>280</x>
-           <y>520</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>gray all squares</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="Zoom_in">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>570</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>Zoom in</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="Zoom_out">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>570</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>Zoom out</string>
-         </property>
-        </widget>
         <widget class="QWidget" name="horizontalLayoutWidget_3">
          <property name="geometry">
           <rect>
@@ -511,35 +344,6 @@
           </item>
          </layout>
         </widget>
-        <widget class="QPushButton" name="Zoom_Reset">
-         <property name="geometry">
-          <rect>
-           <x>280</x>
-           <y>570</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>Zoom reset</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_12">
-         <property name="geometry">
-          <rect>
-           <x>-10</x>
-           <y>600</y>
-           <width>421</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="step_once">
          <property name="enabled">
           <bool>true</bool>
@@ -559,115 +363,297 @@
           <string>step once</string>
          </property>
         </widget>
-        <widget class="QWidget" name="verticalLayoutWidget">
+        <widget class="QTabWidget" name="tabWidget">
          <property name="geometry">
           <rect>
-           <x>40</x>
-           <y>320</y>
-           <width>311</width>
-           <height>131</height>
+           <x>10</x>
+           <y>330</y>
+           <width>381</width>
+           <height>301</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="Map_setting_layout">
-          <item>
-           <layout class="QHBoxLayout" name="Grid_Size_layout">
+         <property name="tabPosition">
+          <enum>QTabWidget::TabPosition::North</enum>
+         </property>
+         <property name="tabShape">
+          <enum>QTabWidget::TabShape::Rounded</enum>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="Map_edit_tab">
+          <attribute name="title">
+           <string>Map edit</string>
+          </attribute>
+          <widget class="QWidget" name="verticalLayoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>6</x>
+             <y>20</y>
+             <width>371</width>
+             <height>171</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="Map_setting_layout" stretch="1,1,0,2,2">
             <item>
-             <widget class="QLabel" name="prop1">
-              <property name="text">
-               <string>Grid Size</string>
+             <layout class="QHBoxLayout" name="Grid_Size_layout">
+              <item>
+               <widget class="QLabel" name="prop1">
+                <property name="text">
+                 <string>Grid Size</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="Gsize_line_edit">
+                <property name="maximumSize">
+                 <size>
+                  <width>100</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="readOnly">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="Update_Map_button">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>Create</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="Square_size_layout">
+              <item>
+               <widget class="QLabel" name="prop1_2">
+                <property name="text">
+                 <string>Square Size</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="Ssize_line_edit">
+                <property name="maximumSize">
+                 <size>
+                  <width>100</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="readOnly">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="update_square_size_button">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>update</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_12">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="Gsize_line_edit">
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="readOnly">
-               <bool>false</bool>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QPushButton" name="empty_all_squares">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>empty all squares</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="gray_all_squares">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>gray all squares</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QPushButton" name="set_empty_sqaure">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>set empty square</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="set_obstacle_square">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>set obstacle</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="Map_interaction_tab">
+          <attribute name="title">
+           <string>Map interaction</string>
+          </attribute>
+          <widget class="QWidget" name="verticalLayoutWidget_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>10</y>
+             <width>371</width>
+             <height>201</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="Map_buttons_layout">
+            <item>
+             <widget class="Line" name="line_9">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="Update_Map_button">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
+             <layout class="QHBoxLayout" name="Load_export_layout">
+              <item>
+               <widget class="QPushButton" name="load_map">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>load map</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="export_map">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>export_map</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_7">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
-              <property name="text">
-               <string>Create</string>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QPushButton" name="set_start_square">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>set start square</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="set_end_square">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>set end square</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_8">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="Zoombuttons">
+              <item>
+               <widget class="QPushButton" name="Zoom_in">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>Zoom in</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="Zoom_out">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>Zoom out</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="Zoom_Reset">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>Zoom reset</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_11">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="Square_size_layout">
-            <item>
-             <widget class="QLabel" name="prop1_2">
-              <property name="text">
-               <string>Square Size</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="Ssize_line_edit">
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="readOnly">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="update_square_size_button">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="text">
-               <string>update</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="Load_export_layout">
-            <item>
-             <widget class="QPushButton" name="load_map">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="text">
-               <string>load map</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="export_map">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="text">
-               <string>export_map</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
+          </widget>
+         </widget>
         </widget>
        </widget>
       </widget>

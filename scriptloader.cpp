@@ -5,6 +5,7 @@
 #include <QWaitCondition>
 #include <atomic>
 #include <stdexcept>
+//#include <QApplication>
 
 // Private implementation class
 class scriptLoader::Private {
@@ -20,10 +21,9 @@ scriptLoader::scriptLoader(std::shared_ptr<GMap> map, QObject *parent)
 
     d = std::unique_ptr<Private>(new Private());
 
-    if (Py_IsInitialized()){
-        Py_Finalize();
+    if (!Py_IsInitialized()) {
+        Py_Initialize();
     }
-    Py_Initialize();
 
 }
 scriptLoader::~scriptLoader() {
@@ -34,14 +34,32 @@ scriptLoader::~scriptLoader() {
     }
 }
 
-void scriptLoader::loadAlgorithm(int choice) {
+bool scriptLoader::loadAlgorithm(int choice) {
 
-    QString filename_ = getPath();
-    if (filename_.isEmpty())
-        return;
-    loadPython(filename_);
+    switch (choice){
+    case 0: // load local choice
+    {
+        QString filename_ = getPath();
+        qDebug() << "Raw filename:" << filename_;
+
+        if (filename_.isEmpty()) {
+            qDebug() << "Operation cancelled by user";
+            return false;  // Now properly scoped
+        }
+        if (!QFile::exists(filename_)) {
+            qDebug() << "File does not exist";
+            return false;
+        }
+        loadPython(filename_);
+        return true;
+    }
+        break;
+    default:
+        return false;
+        break;
+    }
+
 }
-
 void scriptLoader::loadPython(const QString &scriptPath){
 
     //get the script path and name and put them in std::string format
@@ -174,7 +192,7 @@ QString scriptLoader::getPath(){
                                                     "",
                                                     "Python Files (*.py)");
 
-    if (filename.isEmpty()) return 0;
+    if (filename.isEmpty()){ return QString();}
     return filename;
 }
 void scriptLoader::mapPyTransform(){
@@ -225,7 +243,7 @@ void scriptLoader::algorithmRunning(){
             d->pauseCondition.wait(&d->mutex);
         }
 
-    locker.unlock();
+        locker.unlock();
         try {
             PyObject* result =  PyObject_CallObject(stepFunc, nullptr);
             static int steppy = 0;
@@ -240,7 +258,7 @@ void scriptLoader::algorithmRunning(){
             qDebug() << "[algorithmRunning]: going to update map";
             MapUpdate(processedData);
             qDebug() << "[algorithmRunning]: map update done";
-
+            //QApplication::processEvents();
             Py_XDECREF(result);
             PyObject* goalReached = PyObject_GetAttrString(pyAlgorithm, "goalReached");
             PyObject* check =  PyObject_CallObject(goalReached, nullptr);
@@ -324,12 +342,17 @@ void scriptLoader::MapUpdate(const std::vector<std::vector<int>>& data){
 
 void scriptLoader::startAlgorithm() {
 
-    QMutexLocker locker(&d->mutex);
-
     if (d->running) {
+        if(d->paused){
+            qDebug() << "Algorithm is resuming.";
+            resumeAlgorithm();
+            return;
+        }
         qDebug() << "Algorithm is already running.";
         return;
     }
+
+    QMutexLocker locker(&d->mutex);
 
     d->running = true;
     d->paused = false;
@@ -357,8 +380,9 @@ void scriptLoader::stopAlgorithm() {
     if (thread) {
         thread->quit();
         thread->wait();
-        thread = nullptr;
     }
+    thread = nullptr;
+    unloadPython();
 }
 
 void scriptLoader::pauseAlgorithm() {
@@ -375,7 +399,11 @@ void scriptLoader::resumeAlgorithm() {
 }
 QString scriptLoader::getAlgName(){
     PyObject* pyName = PyObject_CallObject(pyAlgoName, nullptr);
-
+    if (!pyName) {
+        qDebug() << "[getAlgName]: Python function call failed!";
+        PyErr_Print();
+        return QString();
+    }
     // Convert Python string to UTF-8
     const char* cStr = PyUnicode_AsUTF8(pyName);
     return QString::fromUtf8(cStr);
