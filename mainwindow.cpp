@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setScene(scene);
     // Enable antialiasing for smoother graphics
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-
+    ui->stepDelay_double_spinbox->setSuffix(" sec");
     //get max size of port and give it to scene handler class
-    Map = std::make_shared<GMap>(16,32);
+    Map = std::make_shared<GMap>(30,15);
     Ghandler = std::make_shared<GraphicsSceneHandler>(scene
                                 ,ui->graphicsView->maximumViewportSize().width()
                                 ,ui->graphicsView->maximumViewportSize().height()
@@ -29,9 +29,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     scriptLoader_ = std::make_shared<scriptLoader>(Map);
 
-    connect(Ghandler->Map.get(), &GMap::changeStartSquareText, this, &MainWindow::handleStartSquareText);
-    connect(Ghandler->Map.get(), &GMap::changeEndSquareText, this, &MainWindow::handleEndSquareText);
-
+    connect(Map.get(), &GMap::changeStartSquareText, this, &MainWindow::handleStartSquareText);
+    connect(Map.get(), &GMap::changeEndSquareText, this, &MainWindow::handleEndSquareText);
+    connect(scriptLoader_.get(), &scriptLoader::stepsTaken, this, &MainWindow::handleStepsTaken);
+    connect(scriptLoader_.get(), &scriptLoader::nodesVisited, this, &MainWindow::handleNodesVisited);
 }
 
 MainWindow::~MainWindow()
@@ -55,17 +56,17 @@ void MainWindow::on_load_map_clicked()
 
     QString filename = QFileDialog::getOpenFileName(nullptr,
                                                     "Open CSV File",
-                                                    "",
+                                                    "maps/",
                                                     "CSV Files (*.csv);;All Files (*)");
     if (filename.isEmpty()) return; // If the user cancels, do nothing
 
-    Ghandler->Map->loadFromCSV(filename);
+    Map->loadFromCSV(filename);
     Ghandler->draw_map();
 
     // get the filename from the file path and display it on the line text edit
     ui->Map_file_name_line_edit->setPlaceholderText(filename.mid(filename.lastIndexOf('/') + 1));
-    ui->Gsize_line_edit->setText(QString::number(Ghandler->Map->getGridSize()));
-    ui->Ssize_line_edit->setText(QString::number(Ghandler->Map->getSqaureSize()));
+    ui->Gsize_line_edit->setText(QString::number(Map->getGridSize()));
+    ui->Ssize_line_edit->setText(QString::number(Map->getSqaureSize()));
     handleStartSquareText(0,0);
     handleEndSquareText(0,0);
 
@@ -74,7 +75,7 @@ void MainWindow::on_load_map_clicked()
 
 void MainWindow::on_export_map_clicked()
 {
-    Ghandler->Map->saveToCSV();
+    Map->saveToCSV();
 }
 
 
@@ -87,19 +88,19 @@ void MainWindow::on_Update_Map_button_clicked()
     if (!ui->Ssize_line_edit->text().isEmpty()){
         Ssize =  ui->Ssize_line_edit->text().toInt();
     } else{
-        Ssize = Ghandler->Map->getSqaureSize();
+        Ssize = Map->getSqaureSize();
     }
     if (!ui->Gsize_line_edit->text().isEmpty()){
         Gsize = ui->Gsize_line_edit->text().toInt();
     } else {
-        Gsize = Ghandler->Map->getGridSize();
+        Gsize = Map->getGridSize();
     }
 
-    Ghandler->Map->resize(Gsize , Ssize);
+    Map->resize(Gsize , Ssize);
     Ghandler->draw_map();
     //modify text boxes
-    ui->Gsize_line_edit->setText(QString::number(Ghandler->Map->getGridSize()));
-    ui->Ssize_line_edit->setText(QString::number(Ghandler->Map->getSqaureSize()));
+    ui->Gsize_line_edit->setText(QString::number(Map->getGridSize()));
+    ui->Ssize_line_edit->setText(QString::number(Map->getSqaureSize()));
 }
 
 void MainWindow::on_update_square_size_button_clicked()
@@ -109,9 +110,9 @@ void MainWindow::on_update_square_size_button_clicked()
     if (!ui->Ssize_line_edit->text().isEmpty()){
         Ssize =  ui->Ssize_line_edit->text().toInt();
     } else{
-        Ssize = Ghandler->Map->getSqaureSize();
+        Ssize = Map->getSqaureSize();
     }
-    Ghandler->Map->setSquareSize(Ssize);
+    Map->setSquareSize(Ssize);
 
 }
 
@@ -126,33 +127,33 @@ void MainWindow::on_actionexit_triggered()
 // Map control buttons
 void MainWindow::on_set_start_square_clicked()
 {
-    Ghandler->Map->change_type(5);
+    Map->change_type(5);
 
 }
 void MainWindow::on_set_end_square_clicked()
 {
-    Ghandler->Map->change_type(6);
+    Map->change_type(6);
 }
 void MainWindow::on_set_obstacle_square_clicked()
 {
-    Ghandler->Map->change_type(4);
+    Map->change_type(4);
 }
 void MainWindow::on_set_empty_sqaure_clicked()
 {
-    Ghandler->Map->change_type(1);
+    Map->change_type(1);
 }
 
 void MainWindow::on_empty_all_squares_clicked()
 {
-    int Gsize = Ghandler->Map->getGridSize();
-    Ghandler->Map->change_type(1);
+    int Gsize = Map->getGridSize();
+    Map->change_type(1);
     for(int i=0; i < Gsize ;i++){
         for(int j=0; j < Gsize ;j++){
-            if (Ghandler->Map->Grid[i][j] != nullptr) {
-                Ghandler->Map->Grid[i][j]->type=Global_button_square_type;
-                Ghandler->Map->Grid[i][j]->update_color();
-                Ghandler->Map->Grid[i][j]->setPen(QPen(Qt::black));
-                Ghandler->Map->type_grid[i][j] = Global_button_square_type;
+            if (Map->Grid[i][j] != nullptr) {
+                Map->Grid[i][j]->type=Global_button_square_type;
+                Map->Grid[i][j]->update_color();
+                Map->Grid[i][j]->setPen(QPen(Qt::black));
+                Map->type_grid[i][j] = Global_button_square_type;
             }
         }
     }
@@ -161,15 +162,15 @@ void MainWindow::on_empty_all_squares_clicked()
 
 void MainWindow::on_gray_all_squares_clicked()
 {
-    int Gsize = Ghandler->Map->getGridSize();
-    Ghandler->Map->change_type(0);
+    int Gsize = Map->getGridSize();
+    Map->change_type(0);
     for(int i=0; i < Gsize ;i++){
         for(int j=0; j < Gsize ;j++){
-            if (Ghandler->Map->Grid[i][j] != nullptr) {
-                Ghandler->Map->Grid[i][j]->type=Global_button_square_type;
-                Ghandler->Map->Grid[i][j]->update_color();
-                Ghandler->Map->Grid[i][j]->setPen(QPen(Qt::black));
-                Ghandler->Map->type_grid[i][j] = Global_button_square_type;
+            if (Map->Grid[i][j] != nullptr) {
+                Map->Grid[i][j]->type=Global_button_square_type;
+                Map->Grid[i][j]->update_color();
+                Map->Grid[i][j]->setPen(QPen(Qt::black));
+                Map->type_grid[i][j] = Global_button_square_type;
             }
         }
     }
@@ -221,6 +222,9 @@ void MainWindow::on_Algorithm_Load_clicked()
     if(scriptLoader_ ->loadAlgorithm(choice)){
         QString algName = scriptLoader_ ->getAlgName();
         ui->Algorithm_Name_linedit->setText(algName);
+        ui->steps_taken_lineedit->setText("0");
+        ui->nodes_visited_lineedit->setText("0");
+        ui->execution_time_lineedit->setText("00:00:00");
     }
 
 }
@@ -242,9 +246,30 @@ void MainWindow::on_clear_clicked()
    scriptLoader_->stopAlgorithm();
 }
 void MainWindow::handleStartSquareText(int x, int y){
-    ui->start_square_line_edit->setText(Ghandler->Map->get_start_square_txt());
+    ui->start_square_line_edit->setText(Map->get_start_square_txt());
 
 }
 void MainWindow::handleEndSquareText(int x, int y){
-    ui->end_square_line_edit->setText(Ghandler->Map->get_end_square_txt());
+    ui->end_square_line_edit->setText(Map->get_end_square_txt());
 }
+void MainWindow::handleStepsTaken(int n){
+    ui->steps_taken_lineedit->setText(QString::number(n));
+
+}
+void MainWindow::handleNodesVisited(int n){
+    ui->nodes_visited_lineedit->setText(QString::number(n));
+}
+void MainWindow::on_stepDelay_double_spinbox_valueChanged(double arg1)
+{
+    if(arg1 !=0){
+        scriptLoader_->setStepDelay(arg1);
+    }
+
+}
+
+
+void MainWindow::on_step_once_clicked()
+{
+    scriptLoader_->Step();
+}
+

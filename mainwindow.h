@@ -70,12 +70,16 @@ private slots:
 
     void on_update_square_size_button_clicked();
 
-    void on_gray_all_squares_2_clicked();
+    void on_stepDelay_double_spinbox_valueChanged(double arg1);
+
+    void on_step_once_clicked();
 
 public slots:
     //Grid Map info methods
     void handleStartSquareText( int x,  int y);
     void handleEndSquareText( int x,  int y);
+    void handleStepsTaken(int n);
+    void handleNodesVisited(int n);
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

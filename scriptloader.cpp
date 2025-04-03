@@ -5,6 +5,7 @@
 #include <QWaitCondition>
 #include <atomic>
 #include <stdexcept>
+#include <QDir>
 //#include <QApplication>
 
 // Private implementation class
@@ -13,6 +14,7 @@ public:
     QMutex mutex;
     std::atomic<bool> running{false};
     std::atomic<bool> paused{false};
+    std::atomic<int>  stepDelay{20};
     QWaitCondition pauseCondition;
 };
 
@@ -54,6 +56,40 @@ bool scriptLoader::loadAlgorithm(int choice) {
         return true;
     }
         break;
+    case 1: // load A* choice
+    {
+        QString filename_ = QDir::currentPath() + "/algorithms/A_star.py";
+        qDebug() << "Raw filename:" << filename_;
+
+        if (filename_.isEmpty()) {
+            qDebug() << "Operation cancelled by user";
+            return false;  // Now properly scoped
+        }
+        if (!QFile::exists(filename_)) {
+            qDebug() << "File does not exist";
+            return false;
+        }
+        loadPython(filename_);
+        return true;
+    }
+        break;
+    case 2: // load Dijkstra choice
+    {
+        QString filename_ = QDir::currentPath() + "/algorithms/Dijkstra.py";
+        qDebug() << "Raw filename:" << filename_;
+
+        if (filename_.isEmpty()) {
+            qDebug() << "Operation cancelled by user";
+            return false;  // Now properly scoped
+        }
+        if (!QFile::exists(filename_)) {
+            qDebug() << "File does not exist";
+            return false;
+        }
+        loadPython(filename_);
+        return true;
+    }
+        break;
     default:
         return false;
         break;
@@ -62,6 +98,8 @@ bool scriptLoader::loadAlgorithm(int choice) {
 }
 void scriptLoader::loadPython(const QString &scriptPath){
 
+    steps = 0;
+    nodes = 0;
     //get the script path and name and put them in std::string format
     //std::string py_path = QFileInfo(scriptPath).absoluteFilePath().toStdString();
     std::string py_path = scriptPath.toStdString();
@@ -189,7 +227,7 @@ QString scriptLoader::getPath(){
 
     QString filename = QFileDialog::getOpenFileName(nullptr,
                                                     "Open python script",
-                                                    "",
+                                                    "algorithms/",
                                                     "Python Files (*.py)");
 
     if (filename.isEmpty()){ return QString();}
@@ -245,41 +283,45 @@ void scriptLoader::algorithmRunning(){
 
         locker.unlock();
         try {
-            PyObject* result =  PyObject_CallObject(stepFunc, nullptr);
-            static int steppy = 0;
-            qDebug() << "[algorithmRunning]: result recieved :" << steppy;
-            steppy++;
-            if (!result) {
-                qDebug() << "Error: step function returned null";
-                PyErr_Print();  // Print Python error details
-                return;
-            }
-            pyStepCallBack(result);
-            qDebug() << "[algorithmRunning]: going to update map";
-            MapUpdate(processedData);
-            qDebug() << "[algorithmRunning]: map update done";
-            //QApplication::processEvents();
-            Py_XDECREF(result);
-            PyObject* goalReached = PyObject_GetAttrString(pyAlgorithm, "goalReached");
-            PyObject* check =  PyObject_CallObject(goalReached, nullptr);
-
-            // Update running state
-            {
-                QMutexLocker stateLocker(&d->mutex);
-                d->running = PyObject_IsTrue(check);
-            }
-            Py_XDECREF(goalReached);
-            Py_XDECREF(check);
+            Step();
         }
         catch (const std::exception& e) {
             qDebug() << "Algorithm error: " << e.what();
             stopAlgorithm();
             return;
         }
-        QThread::msleep(50);
+        QThread::msleep(d->stepDelay);
     }
 }
-
+void scriptLoader::Step(){
+    //if(!d->running){return;}
+    PyObject* result =  PyObject_CallObject(stepFunc, nullptr);
+    static int steppy = 0;
+    qDebug() << "[algorithmRunning]: result recieved :" << steppy;
+    steppy++;
+    if (!result) {
+        qDebug() << "Error: step function returned null";
+        PyErr_Print();  // Print Python error details
+        return;
+    }
+    pyStepCallBack(result);
+    qDebug() << "[algorithmRunning]: going to update map";
+    MapUpdate(processedData);
+    qDebug() << "[algorithmRunning]: map update done";
+    //QApplication::processEvents();
+    Py_XDECREF(result);
+    PyObject* goalReached = PyObject_GetAttrString(pyAlgorithm, "goalReached");
+    PyObject* check =  PyObject_CallObject(goalReached, nullptr);
+    steps++;
+    emit stepsTaken(steps);
+    // Update running state
+    {
+        QMutexLocker stateLocker(&d->mutex);
+        d->running = PyObject_IsTrue(check);
+    }
+    Py_XDECREF(goalReached);
+    Py_XDECREF(check);
+}
 
 void scriptLoader::pyStepCallBack(PyObject* callBack){
 
@@ -305,6 +347,7 @@ void scriptLoader::pyStepCallBack(PyObject* callBack){
             return;
         }
 
+
         int innerSize = PyList_Size(rowObj);
         processedData[i].resize(innerSize);
 
@@ -320,7 +363,6 @@ void scriptLoader::pyStepCallBack(PyObject* callBack){
             processedData[i][j] = PyLong_AsLong(valueObj);
         }
     }
-
     qDebug() << "[pyStepCallBack]: Processed Python data successfully";
 
 }
@@ -335,8 +377,11 @@ void scriptLoader::MapUpdate(const std::vector<std::vector<int>>& data){
         Map->type_grid[x][y] = type;
         Map->Grid[x][y]->type = type;
         Map->Grid[x][y]->update_color();
-
+        if(type == 3){
+            nodes++;
         }
+    }
+    emit nodesVisited(nodes);
 
 }
 
@@ -349,7 +394,12 @@ void scriptLoader::startAlgorithm() {
             return;
         }
         qDebug() << "Algorithm is already running.";
-        return;
+        if (!thread || !thread->isRunning()) {
+            qDebug() << "Thread is not running, resetting state.";
+             d->running = false;
+        } else {
+            return;
+        }
     }
 
     QMutexLocker locker(&d->mutex);
@@ -408,3 +458,9 @@ QString scriptLoader::getAlgName(){
     const char* cStr = PyUnicode_AsUTF8(pyName);
     return QString::fromUtf8(cStr);
 }
+void scriptLoader::setStepDelay(double delay){
+    QMutexLocker locker(&d->mutex);
+
+    d->stepDelay = static_cast<int>(delay * 1000.0); // seconds to milliseconds
+}
+

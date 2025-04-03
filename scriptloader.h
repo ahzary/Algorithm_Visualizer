@@ -32,16 +32,20 @@ public:
     void stopAlgorithm();
     void pauseAlgorithm();
     void resumeAlgorithm();
-
+    void setStepDelay(double delay);
+    void Step();
     QString getAlgName();
 
-
+signals:
+    void stepsTaken(int n);
+    void nodesVisited(int n);
 private:
 
     class Private;
     std::unique_ptr<Private> d;
 
-
+    int steps = 0;
+    int nodes = 0;
     std::vector<PyObject*> allPyObjects;
     QThread* thread = nullptr;
     std::shared_ptr<GMap> Map ;
