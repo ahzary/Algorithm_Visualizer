@@ -35,6 +35,8 @@ public:
     void setStepDelay(double delay);
     void Step();
     QString getAlgName();
+    bool isRunning();
+    bool isPaused();
 
 signals:
     void stepsTaken(int n);

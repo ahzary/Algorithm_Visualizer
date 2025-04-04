@@ -17,6 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Enable antialiasing for smoother graphics
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->stepDelay_double_spinbox->setSuffix(" sec");
+    //setup led
+    algLed = ui->algorithm_ready_led;
+    algLed->setFixedSize(16, 16);
+    algLed->setStyleSheet(
+            "QLabel { background-color: red; border-radius: 8px; border: 1px solid black; }");
+    algLed->setText("");
     //get max size of port and give it to scene handler class
     Map = std::make_shared<GMap>(30,15);
     Ghandler = std::make_shared<GraphicsSceneHandler>(scene
@@ -29,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     scriptLoader_ = std::make_shared<scriptLoader>(Map);
 
+    // connect Signals
     connect(Map.get(), &GMap::changeStartSquareText, this, &MainWindow::handleStartSquareText);
     connect(Map.get(), &GMap::changeEndSquareText, this, &MainWindow::handleEndSquareText);
     connect(scriptLoader_.get(), &scriptLoader::stepsTaken, this, &MainWindow::handleStepsTaken);
@@ -225,20 +232,27 @@ void MainWindow::on_Algorithm_Load_clicked()
         ui->steps_taken_lineedit->setText("0");
         ui->nodes_visited_lineedit->setText("0");
         ui->execution_time_lineedit->setText("00:00:00");
+        ledtoggle(algLed,true);
+        ui->start_pause_button->setEnabled(true);
+        ui->clear->setEnabled(true);
+        ui->step_once->setEnabled(true);
     }
 
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_start_pause_button_clicked()
 {
-    static bool start_pause = true;
-    if(start_pause){
+
+    if(!scriptLoader_->isRunning()){
         scriptLoader_->startAlgorithm();
-    }else{
+
+    }else if(!scriptLoader_->isPaused()){
         scriptLoader_->pauseAlgorithm();
+
+    }else {
+        scriptLoader_->resumeAlgorithm();
     }
-    start_pause = !start_pause;
 }
 
 void MainWindow::on_clear_clicked()
@@ -267,9 +281,18 @@ void MainWindow::on_stepDelay_double_spinbox_valueChanged(double arg1)
 
 }
 
-
 void MainWindow::on_step_once_clicked()
 {
+    scriptLoader_->pauseAlgorithm();
     scriptLoader_->Step();
 }
 
+void MainWindow::ledtoggle(QLabel* led, bool isOn) {
+    led->setStyleSheet(QString("QLabel {"
+                               "background-color: %1;"
+                               "border-radius: %2px;"
+                               "border: 1px solid black;"
+                               "}")
+                           .arg(isOn ? "green" : "red")
+                           .arg(led->width() / 2));
+}

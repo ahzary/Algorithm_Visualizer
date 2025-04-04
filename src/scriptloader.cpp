@@ -464,3 +464,10 @@ void scriptLoader::setStepDelay(double delay){
     d->stepDelay = static_cast<int>(delay * 1000.0); // seconds to milliseconds
 }
 
+bool scriptLoader::isRunning(){
+
+    return d->running;
+}
+bool scriptLoader::isPaused(){
+    return d->paused;
+}

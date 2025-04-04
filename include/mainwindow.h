@@ -8,7 +8,7 @@
 #include "gmap.h"
 #include "graphicsscenehandler.h"
 #include "scriptloader.h"
-
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -66,13 +66,14 @@ private slots:
     // Algorithm script load
     void on_Algorithm_Load_clicked();
 
-    void on_pushButton_clicked();
+    void on_start_pause_button_clicked();
 
     void on_update_square_size_button_clicked();
 
     void on_stepDelay_double_spinbox_valueChanged(double arg1);
 
     void on_step_once_clicked();
+    void ledtoggle(QLabel* led, bool isOn);
 
 public slots:
     //Grid Map info methods
@@ -86,5 +87,6 @@ private:
     std::shared_ptr<GraphicsSceneHandler> Ghandler;
     QLineEdit* Gsize_line_edit ;
     std::shared_ptr<scriptLoader> scriptLoader_;
+    QLabel* algLed;
 };
 #endif // MAINWINDOW_H
