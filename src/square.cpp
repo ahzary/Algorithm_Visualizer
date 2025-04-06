@@ -1,6 +1,6 @@
 #include "square.h"
 int Global_button_square_type = 0;
-
+bool square::isClicked = false;
 
 
 QBrush ColorCode(int type){
@@ -25,9 +25,13 @@ QBrush ColorCode(int type){
 // square functions
 square::square(QObject* parent) : QObject(parent){
     setAcceptHoverEvents(true);
+    isClicked = false;
 }
 void square::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
     setPen(QPen(Qt::red));  // Change color on hover
+    if(isClicked){
+        emit clicked(x,y);
+    }
     update();
     QGraphicsRectItem::hoverEnterEvent(event);
 }
@@ -42,12 +46,14 @@ void square::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         emit clicked(x,y);  // Emit the clicked signal
     }
-
+    if (event->button() == Qt::RightButton) {
+        emit clicked(x,y);  // Emit the clicked signal
+        isClicked = !isClicked;
+    }
     QGraphicsRectItem::mousePressEvent(event);  // Call base class method
 }
+
 void square::update_color(){
-
-
     this->setBrush(ColorCode(this->type));
     this->update();
 

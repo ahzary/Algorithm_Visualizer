@@ -23,8 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
     algLed->setStyleSheet(
             "QLabel { background-color: red; border-radius: 8px; border: 1px solid black; }");
     algLed->setText("");
-    //get max size of port and give it to scene handler class
-    Map = std::make_shared<GMap>(30,15);
+    //create the map and give it to scene handler class
+    Map = std::make_shared<GMap>(30,20);
     Ghandler = std::make_shared<GraphicsSceneHandler>(scene
                                 ,ui->graphicsView->maximumViewportSize().width()
                                 ,ui->graphicsView->maximumViewportSize().height()
@@ -34,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
     intialize_line_edits();
 
     scriptLoader_ = std::make_shared<scriptLoader>(Map);
-
     // connect Signals
     connect(Map.get(), &GMap::changeStartSquareText, this, &MainWindow::handleStartSquareText);
     connect(Map.get(), &GMap::changeEndSquareText, this, &MainWindow::handleEndSquareText);

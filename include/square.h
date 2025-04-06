@@ -28,7 +28,9 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    //void buttonDownPos(QGraphicsSceneMouseEvent* event) override;  // drag function
+    //void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+private:
+    static bool isClicked;
 };
 
 #endif // SQUARE_H
