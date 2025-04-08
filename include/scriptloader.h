@@ -37,6 +37,7 @@ public:
     QString getAlgName();
     bool isRunning();
     bool isPaused();
+    bool isLoaded() const;
 
 signals:
     void stepsTaken(int n);
@@ -52,8 +53,7 @@ private:
     QThread* thread = nullptr;
     std::shared_ptr<GMap> Map ;
     QString getPath();
-    //bool running = false;
-    //bool isPaused = false;
+    bool algorithmLoaded = false;
     // object to interact with python script
     PyObject* pyAlgorithm = nullptr;
     PyObject* stepFunc = nullptr;

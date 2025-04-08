@@ -235,6 +235,7 @@ void MainWindow::on_Algorithm_Load_clicked()
         ui->start_pause_button->setEnabled(true);
         ui->clear->setEnabled(true);
         ui->step_once->setEnabled(true);
+        ui->Algorithm_Load->setText("load");
     }
 
 }
@@ -244,6 +245,8 @@ void MainWindow::on_start_pause_button_clicked()
 {
 
     if(!scriptLoader_->isRunning()){
+
+        Map->backup_map();
         scriptLoader_->startAlgorithm();
 
     }else if(!scriptLoader_->isPaused()){
@@ -256,17 +259,37 @@ void MainWindow::on_start_pause_button_clicked()
 
 void MainWindow::on_clear_clicked()
 {
-   scriptLoader_->stopAlgorithm();
+    scriptLoader_->stopAlgorithm();
+    ledtoggle(algLed,false);
+    ui->start_pause_button->setEnabled(false);
+    ui->clear->setEnabled(true);
+    ui->step_once->setEnabled(false);
+    Map->reset_map();
 }
 void MainWindow::handleStartSquareText(int x, int y){
     ui->start_square_line_edit->setText(Map->get_start_square_txt());
+    if (scriptLoader_->isLoaded() ){
+        ui->Algorithm_Load->setText("Update");
+        ui->start_pause_button->setEnabled(false);
+        ui->clear->setEnabled(true);
+        ui->step_once->setEnabled(false);
+    }
+    Ghandler->update();
 
 }
 void MainWindow::handleEndSquareText(int x, int y){
     ui->end_square_line_edit->setText(Map->get_end_square_txt());
+    if (scriptLoader_->isLoaded() ){
+        ui->Algorithm_Load->setText("Update");
+        ui->start_pause_button->setEnabled(false);
+        ui->clear->setEnabled(true);
+        ui->step_once->setEnabled(false);
+    }
+    Ghandler->update();
 }
 void MainWindow::handleStepsTaken(int n){
     ui->steps_taken_lineedit->setText(QString::number(n));
+    Ghandler->update();
 
 }
 void MainWindow::handleNodesVisited(int n){

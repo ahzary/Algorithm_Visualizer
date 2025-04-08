@@ -40,6 +40,10 @@ public:
     QString get_start_square_txt() const;
     QString get_end_square_txt() const;
 
+    // map backup
+    void backup_map();
+    void reset_map();
+
 signals:
     void changeStartSquareText(int x, int y);
     void changeEndSquareText(int x, int y);
@@ -48,6 +52,7 @@ private slots:
 
 private:
 
+    QVector<QVector<int>>  backupMap;
     // num_of_squares in a row or col;
     int num_of_squares = 16;
     int square_size = 30;

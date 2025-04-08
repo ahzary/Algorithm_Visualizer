@@ -32,7 +32,7 @@ public:
 
 
     void draw_map();
-
+    void update();
 
     QGraphicsRectItem* background;
 

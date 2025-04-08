@@ -52,7 +52,11 @@ bool scriptLoader::loadAlgorithm(int choice) {
             qDebug() << "File does not exist";
             return false;
         }
+        if(algorithmLoaded){
+            unloadPython();
+        }
         loadPython(filename_);
+        algorithmLoaded = true;
         return true;
     }
         break;
@@ -69,7 +73,11 @@ bool scriptLoader::loadAlgorithm(int choice) {
             qDebug() << "File does not exist";
             return false;
         }
+        if(algorithmLoaded){
+            unloadPython();
+        }
         loadPython(filename_);
+        algorithmLoaded = true;
         return true;
     }
         break;
@@ -86,7 +94,11 @@ bool scriptLoader::loadAlgorithm(int choice) {
             qDebug() << "File does not exist";
             return false;
         }
+        if(algorithmLoaded){
+            unloadPython();
+        }
         loadPython(filename_);
+        algorithmLoaded = true;
         return true;
     }
         break;
@@ -206,21 +218,6 @@ void scriptLoader::unloadPython(){
 
     stepFunc = pyAlgorithm = pyMap = pyStart = pyEnd = nullptr;
 
-    // what should be cleared
-    /*
-    Py_XDECREF(pyEnd);
-    Py_XDECREF(pyStart);
-    Py_XDECREF(stepFunc);
-    Py_XDECREF(pyMap);
-    Py_XDECREF(pyAlgorithm);
-    Py_XDECREF(pAlgorithm_class);
-    Py_XDECREF(loader);
-    Py_XDECREF(module);
-    Py_XDECREF(spec);
-    Py_XDECREF(moduleFunc);
-    Py_XDECREF(specFunc);
-    Py_XDECREF(importlib);
-*/
 }
 
 QString scriptLoader::getPath(){
@@ -470,4 +467,7 @@ bool scriptLoader::isRunning(){
 }
 bool scriptLoader::isPaused(){
     return d->paused;
+}
+bool scriptLoader::isLoaded() const{
+    return algorithmLoaded;
 }

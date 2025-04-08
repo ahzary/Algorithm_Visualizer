@@ -45,6 +45,7 @@ void square::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
 void square::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         emit clicked(x,y);  // Emit the clicked signal
+        isClicked = false;
     }
     if (event->button() == Qt::RightButton) {
         emit clicked(x,y);  // Emit the clicked signal

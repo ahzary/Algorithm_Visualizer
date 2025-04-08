@@ -60,3 +60,6 @@ void GraphicsSceneHandler::Zoom(QGraphicsView* view,bool in){
 
 
 }
+void GraphicsSceneHandler::update(){
+    scene->update();
+}

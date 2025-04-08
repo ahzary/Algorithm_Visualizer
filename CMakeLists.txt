@@ -34,6 +34,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${SRC_FILES}
         ${INCLUDE_FILES}
         ${RESOURCE_FILES}
+        helpScreen.ui
     )
 else()
     if(ANDROID)

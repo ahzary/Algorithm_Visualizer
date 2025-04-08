@@ -91,4 +91,3 @@ class Algorithm:
         
     def getName(self):
         return self.name 
-        

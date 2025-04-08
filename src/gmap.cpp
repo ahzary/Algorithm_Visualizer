@@ -243,3 +243,18 @@ QString GMap::get_end_square_txt()const{
     QString result = "x: " + QString::number(end_square->x) + ", " + "y: " + QString::number(end_square->y);
     return result;
 }
+void GMap::backup_map(){
+    backupMap = type_grid;
+}
+void GMap::reset_map(){
+    type_grid = backupMap;
+    for (int i = 0; i < num_of_squares; i++) {
+        for (int j = 0; j < num_of_squares; j++) {
+            if (type_grid[i][j] == 5){start_square = Grid[i][j];}
+            else if (type_grid[i][j] == 6){end_square = Grid[i][j];}
+            Grid[i][j]->type = type_grid[i][j];
+            Grid[i][j]->update_color();
+
+        }
+        }
+}
