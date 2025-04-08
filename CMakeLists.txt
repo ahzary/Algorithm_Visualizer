@@ -11,7 +11,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Find required packages
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+
+# python setup
+set(EMBEDDED_PYTHON_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/python")
+set(Python3_ROOT_DIR "${EMBEDDED_PYTHON_DIR}")
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+message(STATUS "Python3_VERSION: ${Python3_VERSION}")
+message(STATUS "Python3_EXECUTABLE: ${Python3_EXECUTABLE}")
 
 # Include directories
 include_directories(${Python3_INCLUDE_DIRS})
@@ -34,7 +40,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${SRC_FILES}
         ${INCLUDE_FILES}
         ${RESOURCE_FILES}
-        helpScreen.ui
+
     )
 else()
     if(ANDROID)
@@ -77,6 +83,14 @@ install(TARGETS Algorithm_Visualizer
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+#qt_deploy_runtime_libraries(Algorithm_Visualizer)
+add_custom_command(TARGET Algorithm_Visualizer POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${EMBEDDED_PYTHON_DIR}"
+        "$<TARGET_FILE_DIR:Algorithm_Visualizer>/python"
+    COMMENT "Bundling embedded Python..."
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)

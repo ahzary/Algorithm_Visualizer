@@ -6,6 +6,7 @@
 #include <atomic>
 #include <stdexcept>
 #include <QDir>
+#include <QCoreApplication>
 //#include <QApplication>
 
 // Private implementation class
@@ -22,6 +23,14 @@ scriptLoader::scriptLoader(std::shared_ptr<GMap> map, QObject *parent)
     : QObject(parent), Map(map) {
 
     d = std::unique_ptr<Private>(new Private());
+
+    // python setup
+    QString exeDir = QCoreApplication::applicationDirPath();
+    QString pythonDir = exeDir + "/python";
+    qputenv("PYTHONHOME", pythonDir.toUtf8());
+    QString pythonPath = pythonDir + ";" + pythonDir + "/python311.zip";
+    qputenv("PYTHONPATH", pythonPath.toUtf8());
+    Py_SetPythonHome(Py_DecodeLocale(pythonDir.toStdString().c_str(), nullptr));
 
     if (!Py_IsInitialized()) {
         Py_Initialize();
