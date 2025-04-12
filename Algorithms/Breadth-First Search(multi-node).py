@@ -1,4 +1,4 @@
-import heapq
+from collections import deque
 from typing import List, Tuple, Dict, Optional
 
 class Algorithm:
@@ -6,19 +6,21 @@ class Algorithm:
         self.map = map
         self.start = tuple(startPoint)
         self.end = tuple(endPoint)
-        self.open_set = []
+        self.queue = deque()
         self.came_from: Dict[Tuple[int, int], Optional[Tuple[int, int]]] = {}
-        self.dist: Dict[Tuple[int, int], float] = {self.start: 0}
+        self.visited = set()
         self.current = self.start
         self.running = True
         self.name = __name__
 
-        # Initialize open set with start node
-        heapq.heappush(self.open_set, (0, self.start))
+        # Initialize queue with start node
+        self.queue.append(self.start)
+        self.visited.add(self.start)
+        self.came_from[self.start] = None
     
     def get_neighbors(self, pos: Tuple[int, int]) -> List[Tuple[int, int]]:
         """Get walkable neighbors (4-directional)"""
-        directions = [(0,1), (1,0), (0,-1), (-1,0)]
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
         neighbors = []
         x, y = pos
         
@@ -30,45 +32,41 @@ class Algorithm:
         return neighbors
     
     def step(self) -> List[List[int]]:
-        """Execute one step of Dijkstra's algorithm processing multiple nodes at once"""
-        if not self.open_set or not self.running:
+        """Execute one step of BFS, processing ALL nodes at the current depth level"""
+        if not self.queue or not self.running:
             self.running = False
             return []
 
-        # Get all nodes with the current minimum distance
-        current_dist, current_nodes = self.open_set[0][0], []
-        while self.open_set and self.open_set[0][0] == current_dist:
-            _, node = heapq.heappop(self.open_set)
-            current_nodes.append(node)
-        
         changes = []
-        for current in current_nodes:
+        # Process all nodes at the current depth level
+        current_level_size = len(self.queue)
+        for _ in range(current_level_size):
+            current = self.queue.popleft()
             self.current = current
-            
+
             # Check if we've reached the goal
             if current == self.end:
                 self.running = False
                 return self.reconstruct_path()
-            
+
             # Explore neighbors
             for neighbor in self.get_neighbors(current):
-                tentative_dist = self.dist[current] + 1  # 1 is the cost between nodes
-                
-                if neighbor not in self.dist or tentative_dist < self.dist[neighbor]:
+                if neighbor not in self.visited:
+                    self.visited.add(neighbor)
                     self.came_from[neighbor] = current
-                    self.dist[neighbor] = tentative_dist
-                    heapq.heappush(self.open_set, (tentative_dist, neighbor))
-                    
+                    self.queue.append(neighbor)
+
                     # Mark as explored (type 7, yellow)
                     if self.map[neighbor[0]][neighbor[1]] != 6:
                         changes.append([neighbor[0], neighbor[1], 7])
-            
+
             # Mark current position (type 3, red)
             changes.append([current[0], current[1], 3])
+        
         return changes
     
     def reconstruct_path(self) -> List[List[int]]:
-        """Reconstruct the final path"""
+        """Reconstruct the final path (same as Dijkstra's)"""
         path = []
         current = self.end
         while current in self.came_from:

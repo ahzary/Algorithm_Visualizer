@@ -182,7 +182,17 @@
              </item>
              <item>
               <property name="text">
-               <string>Choose Algorithm </string>
+               <string>Breadth-First Search(multi-node per step)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Breadth-First Search(single node per step)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Depth-First Search</string>
               </property>
              </item>
             </widget>

@@ -1,5 +1,4 @@
-import heapq
-import math
+from collections import deque
 from typing import List, Tuple, Dict, Optional
 
 class Algorithm:
@@ -7,26 +6,21 @@ class Algorithm:
         self.map = map
         self.start = tuple(startPoint)
         self.end = tuple(endPoint)
-        self.open_set = []
+        self.queue = deque()
         self.came_from: Dict[Tuple[int, int], Optional[Tuple[int, int]]] = {}
-        self.g_score: Dict[Tuple[int, int], float] = {self.start: 0}
-        self.f_score: Dict[Tuple[int, int], float] = {self.start: self.heuristic(self.start)}
+        self.visited = set()
         self.current = self.start
         self.running = True
         self.name = __name__
-        
-        # Initialize open set with start node
-        heapq.heappush(self.open_set, (self.f_score[self.start], self.start))
-        
-    def heuristic(self, pos: Tuple[int, int]) -> float:
-        """Euclidean distance heuristic"""
-        dx = pos[0] - self.end[0]
-        dy = pos[1] - self.end[1]
-        return math.sqrt(dx*dx + dy*dy)
+
+        # Initialize queue with start node
+        self.queue.append(self.start)
+        self.visited.add(self.start)
+        self.came_from[self.start] = None
     
     def get_neighbors(self, pos: Tuple[int, int]) -> List[Tuple[int, int]]:
         """Get walkable neighbors (4-directional)"""
-        directions = [(0,1), (1,0), (0,-1), (-1,0)]
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
         neighbors = []
         x, y = pos
         
@@ -38,45 +32,37 @@ class Algorithm:
         return neighbors
     
     def step(self) -> List[List[int]]:
-        """Execute one step of A* algorithm"""
-        if not self.open_set or not self.running:
+        """Execute one step of BFS, processing the current level"""
+        if not self.queue or not self.running:
             self.running = False
             return []
-        
-        # Get node with lowest f_score
-        current_f, current = heapq.heappop(self.open_set)
+
+        current = self.queue.popleft()
         self.current = current
-        
+
         # Check if we've reached the goal
         if current == self.end:
             self.running = False
             return self.reconstruct_path()
-        
-        # Explore neighbors
+
         changes = []
+        # Explore neighbors
         for neighbor in self.get_neighbors(current):
-            # Tentative g_score
-            tentative_g = self.g_score[current] + 1  # 1 is distance between nodes
-            
-            if neighbor not in self.g_score or tentative_g < self.g_score[neighbor]:
-                # This path to neighbor is better than any previous one
+            if neighbor not in self.visited:
+                self.visited.add(neighbor)
                 self.came_from[neighbor] = current
-                self.g_score[neighbor] = tentative_g
-                self.f_score[neighbor] = tentative_g + self.heuristic(neighbor)
-                
-                if neighbor not in [i[1] for i in self.open_set]:
-                    heapq.heappush(self.open_set, (self.f_score[neighbor], neighbor))
-                
+                self.queue.append(neighbor)
+
                 # Mark as explored (type 7, yellow)
-                if self.map[neighbor[0]][neighbor[1]] != 6:  # Don't override end square
+                if self.map[neighbor[0]][neighbor[1]] != 6:
                     changes.append([neighbor[0], neighbor[1], 7])
-        
+
         # Mark current position (type 3, red)
         changes.append([current[0], current[1], 3])
         return changes
     
     def reconstruct_path(self) -> List[List[int]]:
-        """Reconstruct the final path"""
+        """Reconstruct the final path (same as Dijkstra's)"""
         path = []
         current = self.end
         while current in self.came_from:
@@ -88,7 +74,6 @@ class Algorithm:
     def isRunning(self) -> bool:
         """Check if algorithm is still running"""
         return self.running
-        
+    
     def getName(self):
-        return self.name 
-        
+        return self.name

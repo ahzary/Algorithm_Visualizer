@@ -230,7 +230,7 @@ void MainWindow::on_Algorithm_Load_clicked()
         ui->Algorithm_Name_linedit->setText(algName);
         ui->steps_taken_lineedit->setText("0");
         ui->nodes_visited_lineedit->setText("0");
-        ui->execution_time_lineedit->setText("00:00:00");
+        ui->execution_time_lineedit->setText("not implemented");
         ledtoggle(algLed,true);
         ui->start_pause_button->setEnabled(true);
         ui->clear->setEnabled(true);

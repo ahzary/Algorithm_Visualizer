@@ -111,6 +111,69 @@ bool scriptLoader::loadAlgorithm(int choice) {
         return true;
     }
         break;
+    case 3: // load Breadth-First Search(multi-node) choice
+    {
+        QString filename_ = QDir::currentPath() + "/algorithms/Breadth-First Search(multi-node).py";
+        qDebug() << "Raw filename:" << filename_;
+
+        if (filename_.isEmpty()) {
+            qDebug() << "Operation cancelled by user";
+            return false;  // Now properly scoped
+        }
+        if (!QFile::exists(filename_)) {
+            qDebug() << "File does not exist";
+            return false;
+        }
+        if(algorithmLoaded){
+            unloadPython();
+        }
+        loadPython(filename_);
+        algorithmLoaded = true;
+        return true;
+    }
+        break;
+    case 4: // load Breadth-First Search choice
+    {
+        QString filename_ = QDir::currentPath() + "/algorithms/Breadth-First Search.py";
+        qDebug() << "Raw filename:" << filename_;
+
+        if (filename_.isEmpty()) {
+            qDebug() << "Operation cancelled by user";
+            return false;  // Now properly scoped
+        }
+        if (!QFile::exists(filename_)) {
+            qDebug() << "File does not exist";
+            return false;
+        }
+        if(algorithmLoaded){
+            unloadPython();
+        }
+        loadPython(filename_);
+        algorithmLoaded = true;
+        return true;
+    }
+        break;
+    case 5: // load Depth-First Search choice
+    {
+        QString filename_ = QDir::currentPath() + "/algorithms/Depth-First Search.py";
+        qDebug() << "Raw filename:" << filename_;
+
+        if (filename_.isEmpty()) {
+            qDebug() << "Operation cancelled by user";
+            return false;  // Now properly scoped
+        }
+        if (!QFile::exists(filename_)) {
+            qDebug() << "File does not exist";
+            return false;
+        }
+        if(algorithmLoaded){
+            unloadPython();
+        }
+        loadPython(filename_);
+        algorithmLoaded = true;
+        return true;
+    }
+        break;
     default:
         return false;
         break;
@@ -316,8 +379,8 @@ void scriptLoader::Step(){
     qDebug() << "[algorithmRunning]: map update done";
     //QApplication::processEvents();
     Py_XDECREF(result);
-    PyObject* goalReached = PyObject_GetAttrString(pyAlgorithm, "goalReached");
-    PyObject* check =  PyObject_CallObject(goalReached, nullptr);
+    PyObject* isRunning = PyObject_GetAttrString(pyAlgorithm, "isRunning");
+    PyObject* check =  PyObject_CallObject(isRunning, nullptr);
     steps++;
     emit stepsTaken(steps);
     // Update running state
@@ -325,7 +388,7 @@ void scriptLoader::Step(){
         QMutexLocker stateLocker(&d->mutex);
         d->running = PyObject_IsTrue(check);
     }
-    Py_XDECREF(goalReached);
+    Py_XDECREF(isRunning);
     Py_XDECREF(check);
 }
 
