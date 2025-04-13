@@ -133,6 +133,14 @@ _you are welcome to add more, you can fork and add more Algorithms or optimize e
 
 _you are welcome to add more, you can fork and add more Maps make a merge request_
 
+#### Map editing
+
+- to change a square type you can simply select the new type you want and then you can left click on the square to change its type
+- its also possible to change multiple squares by right clicking on the first one and then draging the mouse, you can cancel the drag at any time by clicking right click again or left clicking.
+- you can directly set the start and the end from the **Map interaction** tab.
+- you can set empty squares and obstacles from **Map edit** tab
+    - _please note that gray squares are not support in this version_
+
 ## Project Structure
 ```
 Algorithm_Visualizer/
@@ -146,10 +154,14 @@ Algorithm_Visualizer/
 ├── algorithms/         # folder for storing algorithms
 ├── maps/               # folder for storing maps
 └── build/              # CMake build directory
-
 ```
+
+## Roadmap
+ - Implement execution time.
+ - Implement path distance.
 ## Notes
 - Windows may warn about SmartScreen,thats because the app is new and unsigned. Click 'More Info' > 'Run Anyway' to proceed.
 - License
     - This is an open source project.
     - This project is licensed under the MIT License.
+

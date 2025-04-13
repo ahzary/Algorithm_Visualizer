@@ -47,6 +47,7 @@ scriptLoader::~scriptLoader() {
 
 bool scriptLoader::loadAlgorithm(int choice) {
 
+    try{
     switch (choice){
     case 0: // load local choice
     {
@@ -178,7 +179,10 @@ bool scriptLoader::loadAlgorithm(int choice) {
         return false;
         break;
     }
-
+        }
+    catch (...){
+        qDebug() << "[scriptLoader] loadAlgorithm error with choice:" << choice;
+        }
 }
 void scriptLoader::loadPython(const QString &scriptPath){
 

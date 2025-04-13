@@ -746,7 +746,7 @@
           <x>20</x>
           <y>260</y>
           <width>291</width>
-          <height>170</height>
+          <height>207</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="Algorithm_Details">
@@ -858,6 +858,33 @@
            </item>
            <item>
             <widget class="QLineEdit" name="execution_time_lineedit">
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_15">
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="frameShape">
+              <enum>QFrame::Shape::NoFrame</enum>
+             </property>
+             <property name="text">
+              <string>path distance</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="path_distance_lineedit">
              <property name="maximumSize">
               <size>
                <width>150</width>
