@@ -7,13 +7,16 @@ A user-friendly tool to visualize visualizing pathfinding algorithms. Load your 
 
 ## Features
 
-- ✅ Custom Algorithm Support – Load algorithms from the built-in library or your own Python scripts.
+- ✅ [Custom Algorithm Support](#custom-algorithm) – Load algorithms from the built-in library or your own Python scripts.
 - ⏯️ Interactive Control – Pause and resume algorithms at any time to observe their behavior.
 - 📊 Real-Time Analytics – Track explored nodes and step counts as the algorithm runs.
-- 🗺️ Flexible Map Management – Import, export, and modify maps dynamically.
+- 🗺️ [Flexible Map Management](#map-editing) – Import, export, and modify maps dynamically.
 - ✏️ On-the-Fly Editing – Adjust maps with easy to use map editing tools.
 
 ## Screenshots
+
+![App gif](https://github.com/ahzary/Algorithm_Visualizer/blob/master/Algorithm_Visualizer_gif_1.gif?raw=true)
+
 ![App Screenshot](https://github.com/ahzary/Algorithm_Visualizer/blob/master/screenshot_1.PNG?raw=true)
 
 ![App Screenshot](https://github.com/ahzary/Algorithm_Visualizer/blob/master/screenshot_2.PNG?raw=true)
@@ -23,14 +26,16 @@ A user-friendly tool to visualize visualizing pathfinding algorithms. Load your 
 ## Installation
 
 - Windows:
+    
     1- Download the latest release [here](https://github.com/ahzary/Algorithm_Visualizer/releases).
+    
     2- Run `Algorithm_Visualizer.exe` (Windows SmartScreen may warn; see [Notes](#notes)).
 - From Source:  
     - Requirements
 
         - CMake ≥ 3.16
         - Qt5 or Qt6 (Widgets module)
-        - Python3 (with development headers)
+        - Python 3.11.9 (with development headers)
         - C++17 compiler
 
     ```bash
@@ -43,7 +48,7 @@ A user-friendly tool to visualize visualizing pathfinding algorithms. Load your 
     ```
 
 ## Custom Algorithm
-_this section provides the necassary info to import your own algorithms._
+_this section provides the necessary info to import your own algorithms._
 
 - The Script must be written in **Python**  
 - Your Script must have a class Called **"Algorithm"**
