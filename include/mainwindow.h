@@ -81,6 +81,7 @@ public slots:
     void handleEndSquareText( int x,  int y);
     void handleStepsTaken(int n);
     void handleNodesVisited(int n);
+    void handlePathDistance(int n);
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

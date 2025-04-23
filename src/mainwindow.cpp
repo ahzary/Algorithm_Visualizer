@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Map.get(), &GMap::changeEndSquareText, this, &MainWindow::handleEndSquareText);
     connect(scriptLoader_.get(), &scriptLoader::stepsTaken, this, &MainWindow::handleStepsTaken);
     connect(scriptLoader_.get(), &scriptLoader::nodesVisited, this, &MainWindow::handleNodesVisited);
+    connect(scriptLoader_.get(), &scriptLoader::pathDistanceSignal, this, &MainWindow::handlePathDistance);
+
 }
 
 MainWindow::~MainWindow()
@@ -228,9 +230,10 @@ void MainWindow::on_Algorithm_Load_clicked()
     if(scriptLoader_ ->loadAlgorithm(choice)){
         QString algName = scriptLoader_ ->getAlgName();
         ui->Algorithm_Name_linedit->setText(algName);
-        ui->steps_taken_lineedit->setText("0");
-        ui->nodes_visited_lineedit->setText("0");
-        ui->execution_time_lineedit->setText("not implemented");
+        ui->steps_taken_lineedit->setPlaceholderText("0");
+        ui->nodes_visited_lineedit->setPlaceholderText("0");
+        ui->execution_time_lineedit->setPlaceholderText("not implemented");
+        ui->path_distance_lineedit->setPlaceholderText("0");
         ledtoggle(algLed,true);
         ui->start_pause_button->setEnabled(true);
         ui->clear->setEnabled(true);
@@ -317,4 +320,7 @@ void MainWindow::ledtoggle(QLabel* led, bool isOn) {
                                "}")
                            .arg(isOn ? "green" : "red")
                            .arg(led->width() / 2));
+}
+void MainWindow::handlePathDistance(int n){
+    ui->path_distance_lineedit->setText(QString::number(n));
 }

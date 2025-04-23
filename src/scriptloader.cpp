@@ -452,9 +452,12 @@ void scriptLoader::MapUpdate(const std::vector<std::vector<int>>& data){
         Map->Grid[x][y]->update_color();
         if(type == 3){
             nodes++;
+        }else if(type == 2){
+            pathDistance++;
         }
     }
     emit nodesVisited(nodes);
+    emit pathDistanceSignal(pathDistance);
 
 }
 
@@ -546,4 +549,7 @@ bool scriptLoader::isPaused(){
 }
 bool scriptLoader::isLoaded() const{
     return algorithmLoaded;
+}
+int scriptLoader::getPathDistance() const{
+    return pathDistance;
 }

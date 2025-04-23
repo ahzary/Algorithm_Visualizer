@@ -38,15 +38,17 @@ public:
     bool isRunning();
     bool isPaused();
     bool isLoaded() const;
-
+    int getPathDistance() const;
 signals:
     void stepsTaken(int n);
     void nodesVisited(int n);
+    void pathDistanceSignal(int n);
 private:
 
     class Private;
     std::unique_ptr<Private> d;
 
+    int pathDistance = 0;
     int steps = 0;
     int nodes = 0;
     std::vector<PyObject*> allPyObjects;
