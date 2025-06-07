@@ -8,7 +8,9 @@
 #include "gmap.h"
 #include "graphicsscenehandler.h"
 #include "scriptloader.h"
+#include "stopwatch.h"
 #include <QLabel>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -82,6 +84,7 @@ public slots:
     void handleStepsTaken(int n);
     void handleNodesVisited(int n);
     void handlePathDistance(int n);
+    void updateStopwatch();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
@@ -89,5 +92,8 @@ private:
     QLineEdit* Gsize_line_edit ;
     std::shared_ptr<scriptLoader> scriptLoader_;
     QLabel* algLed;
+    std::unique_ptr<Stopwatch> stopwatch_;
+    QLineEdit* execution_time;
+    QTimer* updateTimer;
 };
 #endif // MAINWINDOW_H

@@ -25,14 +25,16 @@ MainWindow::MainWindow(QWidget *parent)
     algLed->setText("");
     //create the map and give it to scene handler class
     Map = std::make_shared<GMap>(30,20);
+    stopwatch_ = std::make_unique<Stopwatch>();
     Ghandler = std::make_shared<GraphicsSceneHandler>(scene
                                 ,ui->graphicsView->maximumViewportSize().width()
                                 ,ui->graphicsView->maximumViewportSize().height()
                                 ,Map
                                 ,this);
-
+    execution_time = ui->execution_time_lineedit;
     intialize_line_edits();
-
+    updateTimer = new QTimer(this);
+    updateTimer->setInterval(100);
     scriptLoader_ = std::make_shared<scriptLoader>(Map);
     // connect Signals
     connect(Map.get(), &GMap::changeStartSquareText, this, &MainWindow::handleStartSquareText);
@@ -40,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(scriptLoader_.get(), &scriptLoader::stepsTaken, this, &MainWindow::handleStepsTaken);
     connect(scriptLoader_.get(), &scriptLoader::nodesVisited, this, &MainWindow::handleNodesVisited);
     connect(scriptLoader_.get(), &scriptLoader::pathDistanceSignal, this, &MainWindow::handlePathDistance);
+    connect(updateTimer, &QTimer::timeout, this, &MainWindow::updateStopwatch);
 
 }
 
@@ -55,7 +58,7 @@ void MainWindow::intialize_line_edits(){
     Gsize_line_edit->setPlaceholderText("enter map size");
     ui->Map_file_name_line_edit->setPlaceholderText("New Map");
     ui->Ssize_line_edit->setPlaceholderText("enter square size");
-
+    execution_time->setPlaceholderText("00:00.00");
 
 }
 
@@ -232,7 +235,7 @@ void MainWindow::on_Algorithm_Load_clicked()
         ui->Algorithm_Name_linedit->setText(algName);
         ui->steps_taken_lineedit->setPlaceholderText("0");
         ui->nodes_visited_lineedit->setPlaceholderText("0");
-        ui->execution_time_lineedit->setPlaceholderText("not implemented");
+        ui->execution_time_lineedit->setPlaceholderText("00:00.00");
         ui->path_distance_lineedit->setPlaceholderText("0");
         ledtoggle(algLed,true);
         ui->start_pause_button->setEnabled(true);
@@ -251,12 +254,17 @@ void MainWindow::on_start_pause_button_clicked()
 
         Map->backup_map();
         scriptLoader_->startAlgorithm();
+        stopwatch_->start();
+        updateTimer->start();
 
     }else if(!scriptLoader_->isPaused()){
         scriptLoader_->pauseAlgorithm();
-
+        stopwatch_->stop();
+        updateTimer->stop();
     }else {
         scriptLoader_->resumeAlgorithm();
+        stopwatch_->start();
+        updateTimer->start();
     }
 }
 
@@ -323,4 +331,18 @@ void MainWindow::ledtoggle(QLabel* led, bool isOn) {
 }
 void MainWindow::handlePathDistance(int n){
     ui->path_distance_lineedit->setText(QString::number(n));
+}
+void MainWindow::updateStopwatch(){
+    double seconds = stopwatch_->elapsedSeconds();
+
+    int minutes = static_cast<int>(seconds / 60);
+    int sec = static_cast<int>(seconds) % 60;
+    int msec = static_cast<int>((seconds - static_cast<int>(seconds)) * 1000);
+
+    QString timeStr = QString("%1:%2.%3")
+                          .arg(minutes, 2, 10, QChar('0'))
+                          .arg(sec, 2, 10, QChar('0'))
+                          .arg(msec, 3, 10, QChar('0'));
+
+    execution_time->setText(timeStr);
 }
