@@ -43,6 +43,7 @@ signals:
     void stepsTaken(int n);
     void nodesVisited(int n);
     void pathDistanceSignal(int n);
+    void endReached();
 private:
 
     class Private;

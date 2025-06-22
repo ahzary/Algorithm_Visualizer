@@ -22,8 +22,8 @@ void Stopwatch::stop()
 
 void Stopwatch::reset()
 {
-    accumulatedTime = 0;
     running = false;
+    accumulatedTime = 0;
 }
 
 qint64 Stopwatch::elapsedMilliseconds() const

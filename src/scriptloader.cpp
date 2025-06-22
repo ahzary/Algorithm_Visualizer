@@ -391,6 +391,9 @@ void scriptLoader::Step(){
     {
         QMutexLocker stateLocker(&d->mutex);
         d->running = PyObject_IsTrue(check);
+        if(!PyObject_IsTrue(check)){
+            emit endReached();
+        }
     }
     Py_XDECREF(isRunning);
     Py_XDECREF(check);

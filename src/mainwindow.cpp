@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(scriptLoader_.get(), &scriptLoader::nodesVisited, this, &MainWindow::handleNodesVisited);
     connect(scriptLoader_.get(), &scriptLoader::pathDistanceSignal, this, &MainWindow::handlePathDistance);
     connect(updateTimer, &QTimer::timeout, this, &MainWindow::updateStopwatch);
+    connect(scriptLoader_.get(), &scriptLoader::endReached, this, &MainWindow::stopStopwatch);
 
 }
 
@@ -270,12 +271,14 @@ void MainWindow::on_start_pause_button_clicked()
 
 void MainWindow::on_clear_clicked()
 {
+    stopwatch_->reset();
     scriptLoader_->stopAlgorithm();
     ledtoggle(algLed,false);
     ui->start_pause_button->setEnabled(false);
     ui->clear->setEnabled(true);
     ui->step_once->setEnabled(false);
     Map->reset_map();
+    scene->update();
 }
 void MainWindow::handleStartSquareText(int x, int y){
     ui->start_square_line_edit->setText(Map->get_start_square_txt());
@@ -333,6 +336,22 @@ void MainWindow::handlePathDistance(int n){
     ui->path_distance_lineedit->setText(QString::number(n));
 }
 void MainWindow::updateStopwatch(){
+    double seconds = stopwatch_->elapsedSeconds();
+
+    int minutes = static_cast<int>(seconds / 60);
+    int sec = static_cast<int>(seconds) % 60;
+    int msec = static_cast<int>((seconds - static_cast<int>(seconds)) * 1000);
+
+    QString timeStr = QString("%1:%2.%3")
+                          .arg(minutes, 2, 10, QChar('0'))
+                          .arg(sec, 2, 10, QChar('0'))
+                          .arg(msec, 3, 10, QChar('0'));
+
+    execution_time->setText(timeStr);
+}
+void MainWindow::stopStopwatch(){
+    stopwatch_->stop();
+
     double seconds = stopwatch_->elapsedSeconds();
 
     int minutes = static_cast<int>(seconds / 60);

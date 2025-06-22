@@ -85,6 +85,7 @@ public slots:
     void handleNodesVisited(int n);
     void handlePathDistance(int n);
     void updateStopwatch();
+    void stopStopwatch();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
