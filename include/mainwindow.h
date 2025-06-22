@@ -11,6 +11,8 @@
 #include "stopwatch.h"
 #include <QLabel>
 #include <QTimer>
+#include <QTextBrowser>
+#include <QDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -77,6 +79,8 @@ private slots:
     void on_step_once_clicked();
     void ledtoggle(QLabel* led, bool isOn);
 
+    void on_actionopen_Help_triggered();
+
 public slots:
     //Grid Map info methods
     void handleStartSquareText( int x,  int y);
@@ -96,5 +100,6 @@ private:
     std::unique_ptr<Stopwatch> stopwatch_;
     QLineEdit* execution_time;
     QTimer* updateTimer;
+    QDialog *helpWindow = nullptr;
 };
 #endif // MAINWINDOW_H

@@ -41,6 +41,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${INCLUDE_FILES}
         ${RESOURCE_FILES}
         include/stopwatch.h src/stopwatch.cpp
+        helpFile.qrc
 
     )
 else()

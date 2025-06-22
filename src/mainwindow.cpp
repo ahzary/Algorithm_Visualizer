@@ -4,6 +4,7 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QIcon>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -364,4 +365,41 @@ void MainWindow::stopStopwatch(){
                           .arg(msec, 3, 10, QChar('0'));
 
     execution_time->setText(timeStr);
+}
+
+void MainWindow::on_actionopen_Help_triggered()
+{
+    if (helpWindow && helpWindow->isVisible()) {
+        helpWindow->raise();
+        helpWindow->activateWindow();
+        return;
+    }
+
+    QFile file("README.md");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Error", "Could not open README.md");
+        return;
+    }
+
+    QString markdownContent = file.readAll();
+    file.close();
+
+    helpWindow = new QDialog(this);
+    helpWindow->setAttribute(Qt::WA_DeleteOnClose);
+    helpWindow->setWindowTitle("Help");
+
+    QTextBrowser *viewer = new QTextBrowser(helpWindow);
+    viewer->setOpenExternalLinks(true);
+    viewer->setOpenLinks(true);
+    viewer->setMarkdown(markdownContent);
+    QVBoxLayout *layout = new QVBoxLayout(helpWindow);
+    layout->addWidget(viewer);
+    helpWindow->setLayout(layout);
+    helpWindow->resize(600, 400);
+    helpWindow->show();
+
+    // Reset pointer when closed
+    connect(helpWindow, &QDialog::destroyed, this, [this]() {
+        helpWindow = nullptr;
+    });
 }
