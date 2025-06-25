@@ -39,7 +39,7 @@ GMap::GMap(int num_of_squares,int square_size){
 }
 
 void GMap::update_map(){
-qDebug() << "entering update map" ;
+//qDebug() << "entering update map" ;
 // go over each grid square and update its color
 
         for(int i=0;i<num_of_squares;i++){
@@ -209,13 +209,14 @@ qDebug() << "entering update map" ;
  const int GMap::getGridSize(){
      return num_of_squares;
  }
- const int GMap::getSqaureSize(){
+ const int GMap::getSquareSize(){
      return square_size;
  }
  void GMap::setSquareSize(int newSize){
+     square_size = newSize;
      for (int i = 0; i < num_of_squares; i++) {
          for (int j = 0; j < num_of_squares; j++) {
-             Grid[i][j]->setRect(i * newSize, j * newSize, newSize, newSize);
+             Grid[i][j]->setRect(i * square_size, j * square_size, square_size, square_size);
          }}
 
  }

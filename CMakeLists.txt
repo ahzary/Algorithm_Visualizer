@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Find required packages
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Test)
 # python setup
 set(EMBEDDED_PYTHON_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/python")
 set(Python3_ROOT_DIR "${EMBEDDED_PYTHON_DIR}")
@@ -30,6 +30,28 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(src)
 add_subdirectory(include)
 add_subdirectory(resource)
+add_subdirectory(test)
+add_subdirectory(googletest)
+
+add_executable(google_unit_test
+    ${TEST_SOURCES}
+    ${SRC_FILES}
+    ${INCLUDE_FILES}
+    mainwindow.ui
+    helpFile.qrc
+)
+
+target_link_libraries(google_unit_test
+    gtest
+    gtest_main
+    pthread
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Test
+    ${Python3_LIBRARIES}
+)
+
+enable_testing()
+add_test(NAME google_unit_tests COMMAND google_unit_test)
 
 # Main executable
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -40,9 +62,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${SRC_FILES}
         ${INCLUDE_FILES}
         ${RESOURCE_FILES}
-        include/stopwatch.h src/stopwatch.cpp
         helpFile.qrc
-
     )
 else()
     if(ANDROID)
@@ -65,7 +85,6 @@ else()
 endif()
 
 target_link_libraries(Algorithm_Visualizer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${Python3_LIBRARIES})
-
 # Bundle properties
 if(${QT_VERSION} VERSION_LESS 6.1.0)
   set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Algorithm_Visualizer)

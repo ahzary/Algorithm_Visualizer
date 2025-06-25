@@ -79,7 +79,7 @@ void MainWindow::on_load_map_clicked()
     // get the filename from the file path and display it on the line text edit
     ui->Map_file_name_line_edit->setPlaceholderText(filename.mid(filename.lastIndexOf('/') + 1));
     ui->Gsize_line_edit->setText(QString::number(Map->getGridSize()));
-    ui->Ssize_line_edit->setText(QString::number(Map->getSqaureSize()));
+    ui->Ssize_line_edit->setText(QString::number(Map->getSquareSize()));
     handleStartSquareText(0,0);
     handleEndSquareText(0,0);
 
@@ -101,7 +101,7 @@ void MainWindow::on_Update_Map_button_clicked()
     if (!ui->Ssize_line_edit->text().isEmpty()){
         Ssize =  ui->Ssize_line_edit->text().toInt();
     } else{
-        Ssize = Map->getSqaureSize();
+        Ssize = Map->getSquareSize();
     }
     if (!ui->Gsize_line_edit->text().isEmpty()){
         Gsize = ui->Gsize_line_edit->text().toInt();
@@ -113,7 +113,7 @@ void MainWindow::on_Update_Map_button_clicked()
     Ghandler->draw_map();
     //modify text boxes
     ui->Gsize_line_edit->setText(QString::number(Map->getGridSize()));
-    ui->Ssize_line_edit->setText(QString::number(Map->getSqaureSize()));
+    ui->Ssize_line_edit->setText(QString::number(Map->getSquareSize()));
 }
 
 void MainWindow::on_update_square_size_button_clicked()
@@ -123,7 +123,7 @@ void MainWindow::on_update_square_size_button_clicked()
     if (!ui->Ssize_line_edit->text().isEmpty()){
         Ssize =  ui->Ssize_line_edit->text().toInt();
     } else{
-        Ssize = Map->getSqaureSize();
+        Ssize = Map->getSquareSize();
     }
     Map->setSquareSize(Ssize);
 

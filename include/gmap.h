@@ -28,8 +28,8 @@ public:
     int* num_of_squares_ptr = &num_of_squares;
 
     const int getGridSize();
-    const int getSqaureSize();
-    void setGidSize(int newSize);
+    const int getSquareSize();
+    //void setGidSize(int newSize);
     void setSquareSize(int newSize);
 
     //method for python

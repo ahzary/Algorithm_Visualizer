@@ -5,5 +5,6 @@ set(INCLUDE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/graphicsscenehandler.h
     ${CMAKE_CURRENT_SOURCE_DIR}/square.h
     ${CMAKE_CURRENT_SOURCE_DIR}/scriptloader.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/stopwatch.h
     PARENT_SCOPE
 )

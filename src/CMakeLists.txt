@@ -5,5 +5,6 @@ set(SRC_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/graphicsscenehandler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/square.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/scriptloader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/stopwatch.cpp
     PARENT_SCOPE
 )

@@ -27,9 +27,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::shared_ptr<GMap> Map ;
-
-
+    std::shared_ptr<GMap> Map;
+    QGraphicsScene* getScene() const { return scene; }
 
 private slots:
 
