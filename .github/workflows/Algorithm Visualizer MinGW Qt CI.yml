@@ -27,9 +27,8 @@ jobs:
 
     - name: Configure with CMake
       run: |
-        cmake -S . -B build -G "MinGW Makefiles" ^
-          -DCMAKE_BUILD_TYPE=Release ^
-          -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}"
+        cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}"
+
 
     - name: Build
       run: cmake --build build
