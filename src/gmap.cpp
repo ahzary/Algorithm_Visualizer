@@ -178,7 +178,7 @@ void GMap::update_map(){
  }
 
  void GMap::resize(int newSize,int square_size){
-    qDebug() << "entered resize" <<newSize << square_size ;
+    qDebug() << "entered resize, new size:" <<newSize<< " square size:" << square_size ;
     for (int i = 0; i < Grid.size(); i++) {
         for (int j = 0; j < Grid[i].size(); j++) {
             if(Grid[i][j]){
@@ -190,7 +190,7 @@ void GMap::update_map(){
     Grid.clear();
     type_grid.clear();
 
-    num_of_squares = newSize;
+    this->num_of_squares = newSize;
     this->square_size = square_size;
 
     Grid.resize(num_of_squares, QVector<square*>(num_of_squares, nullptr));
