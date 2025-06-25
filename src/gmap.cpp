@@ -179,10 +179,12 @@ void GMap::update_map(){
 
  void GMap::resize(int newSize,int square_size){
     qDebug() << "entered resize" <<newSize << square_size ;
-    for (int i = 0; i < num_of_squares; i++) {
-        for (int j = 0; j < num_of_squares; j++) {
+    for (int i = 0; i < Grid.size(); i++) {
+        for (int j = 0; j < Grid[i].size(); j++) {
+            if(Grid[i][j]){
             delete Grid[i][j];  // delete old square and free memory to prevent leaks
             Grid[i][j] = nullptr;
+            }
         }
     }
     Grid.clear();
