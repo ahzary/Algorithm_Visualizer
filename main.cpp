@@ -1,8 +1,11 @@
-#include "mainwindow.h"
+#ifdef _WIN32
+#include <windows.h>
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#endif
 
+#include "mainwindow.h"
 #include <QApplication>
 #include <QDir>
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
