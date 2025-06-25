@@ -16,24 +16,29 @@ jobs:
       with:
         submodules: true
 
-    - name: Install Qt with MinGW
+    - name: Install Qt 6.8.2 with MinGW
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.8.2'
         arch: win64_mingw
-        tools: 'tools_mingw'
+        tools: 'tools_mingw1120' # Must match actual version used by the Qt build
 
-    - name: Add MinGW to PATH
+    - name: Add Qt and MinGW to PATH
       run: |
-        echo "${{ env.Qt6_DIR }}/../../Tools/mingw1120_64/bin" >> $GITHUB_PATH
+        echo "${{ env.Qt6_DIR }}/bin" >> $env:GITHUB_PATH
+        echo "${{ env.Qt6_TOOLS_DIR }}/mingw1120_64/bin" >> $env:GITHUB_PATH
 
     - name: Configure with CMake
       run: |
         cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}"
 
-
     - name: Build
       run: cmake --build build
 
+    - name: Deploy test executable (windeployqt)
+      run: |
+        "${{ env.Qt6_DIR }}/bin/windeployqt.exe" build/google_unit_test.exe
+
     - name: Run Tests
-      run: ctest --test-dir build --output-on-failure
+      run: |
+        ctest --test-dir build --output-on-failure

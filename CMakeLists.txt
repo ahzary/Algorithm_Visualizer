@@ -49,6 +49,14 @@ target_link_libraries(google_unit_test
     Qt${QT_VERSION_MAJOR}::Test
     ${Python3_LIBRARIES}
 )
+add_custom_command(TARGET google_unit_test POST_BUILD
+    COMMAND "E:/Qt/6.8.2/mingw_64/bin/windeployqt.exe"
+            --no-translations
+            --no-opengl-sw
+            $<TARGET_FILE:google_unit_test>
+    COMMENT "Running windeployqt on test executable..."
+)
+
 
 enable_testing()
 add_test(NAME google_unit_tests COMMAND google_unit_test)
